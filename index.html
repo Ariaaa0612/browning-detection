@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鲜切苹果褐变货架期预测系统</title>
+<style>
+:root{--green:#1b7a4b;--green2:#2fa06a;--bg:#f4f6f5;--card:#fff;--ink:#1f2a26;--sub:#6b7a74;--line:#e2e8e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:linear-gradient(135deg,#1b7a4b,#2fa06a);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px}
+header h1{font-size:15px;margin:0;font-weight:600;line-height:1.3}
+header h1 small{display:block;font-size:11px;opacity:.82}
+.seg{margin-left:auto;display:flex;background:rgba(255,255,255,.16);border-radius:10px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;color:#eaf5ef;font-size:12px;padding:6px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:#fff;color:var(--green);font-weight:600}
+.pop{border:1px solid rgba(255,255,255,.45);background:transparent;color:#fff;font-size:12px;padding:6px 10px;border-radius:9px;cursor:pointer}
+main{position:relative;height:calc(100vh - 108px)}
+.frameWrap{position:absolute;inset:0;display:none}
+.frameWrap.on{display:block}
+iframe{width:100%;height:100%;border:0;background:var(--bg)}
+footer{font-size:11px;color:var(--sub);background:#eef2f0;border-top:1px solid var(--line);padding:6px 12px;text-align:center;line-height:1.45}
+footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header>
+  <h1>鲜切苹果褐变货架期预测系统</h1>
+  <button id="pop" class="pop" style="margin-left:auto">新窗口打开</button>
+</header>
+<main>
+  <section class="frameWrap on" id="wrapMain"><iframe id="fMain" title="鲜切苹果褐变货架期预测系统" allow="camera;microphone;fullscreen" allowfullscreen></iframe></section>
+</main>
+<footer>摄像头被浏览器拦截（多为直接双击 <b>file://</b> 打开）时，请用「选照片」图片模式；或改用本地服务器 / https 打开以启用实时摄像头。</footer>
+
+<script type="text/template" id="tplV7">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1b7a4b">
+<title>鲜切苹果褐变货架期预测系统</title>
+<style>
+:root{--green:#1b7a4b;--green2:#2fa06a;--bg:#f4f6f5;--card:#fff;--ink:#1f2a26;--sub:#6b7a74;
+  --line:#e2e8e5;--warn:#d9822b;--bad:#c0392b;--ok:#1b7a4b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.5}
+.app{max-width:560px;margin:0 auto;padding:12px 12px 40px}
+header{display:flex;align-items:center;gap:8px;padding:6px 4px 12px}
+header .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green),var(--green2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+header h1{font-size:17px;margin:0;font-weight:600}
+header .v{margin-left:auto;font-size:12px;color:var(--sub);background:#eef2f0;padding:3px 8px;border-radius:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{font-size:14px;margin:0 0 10px;font-weight:600;display:flex;align-items:center;gap:6px}
+.badge{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:6px;background:var(--green);color:#fff;font-size:11px;font-weight:600}
+.stage{display:flex;gap:6px;margin-bottom:12px}
+.stage div{flex:1;text-align:center;font-size:11.5px;padding:7px 2px;border-radius:10px;background:#eef2f0;color:var(--sub);border:1px solid transparent}
+.stage div.on{background:#e6f4ec;color:var(--green);border-color:#bfe3cf;font-weight:600}
+.note{font-size:11.5px;color:var(--sub);line-height:1.6}.note b{color:var(--ink)}
+button{font-family:inherit;font-size:14px;border:none;border-radius:12px;padding:12px 14px;font-weight:600;cursor:pointer}
+.btn-primary{width:100%;background:var(--green);color:#fff}
+.btn-primary:disabled{background:#b9c6c0;cursor:not-allowed}
+.btn-dark{width:100%;background:#20302a;color:#fff}
+.btn-dark:disabled{background:#b9c6c0;cursor:not-allowed}
+.btn-ghost{background:#eef2f0;color:var(--ink)}
+.hide{display:none}
+/* 取景 */
+.videoWrap{position:relative;width:100%;aspect-ratio:1/1;background:#0e1a15;border-radius:14px;overflow:hidden;margin-bottom:10px}
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.roi{position:absolute;left:20%;top:20%;width:60%;height:60%;border:2px dashed rgba(255,255,255,.75);border-radius:6px;pointer-events:none}
+.roi.pass{border-color:#4fd18b;border-style:solid}
+.hintbar{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:12.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72));text-align:center}
+/* 固定条件承诺 */
+.pledge{display:flex;align-items:flex-start;gap:9px;padding:10px 11px;border-radius:10px;background:#f7faf8;border:1px solid var(--line);font-size:12.5px;line-height:1.55;margin-top:10px;cursor:pointer}
+.pledge input{margin-top:2px;transform:scale(1.15);flex:0 0 auto}
+.pledge.ok{background:#e6f4ec;border-color:#bfe3cf}
+/* 校验清单 */
+.gate{display:flex;flex-direction:column;gap:6px}
+.grow{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:7px 9px;border-radius:9px;background:#f7f9f8;border:1px solid var(--line)}
+.dot{width:15px;height:15px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;background:#c8d1cd}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}.dot.warn{background:var(--warn)}
+.grow .val{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--sub);font-size:12px}
+.grow .hint{color:#9aa8a2;font-size:11px}
+/* 结果 */
+.bigWrap{display:flex;align-items:flex-end;gap:8px;padding:6px 0 2px}
+.bigNum{font-size:40px;font-weight:700;line-height:1;color:var(--green);font-variant-numeric:tabular-nums}
+.bigNum.na{color:#9aa8a2;font-size:30px}
+.bigUnit{font-size:11.5px;color:var(--sub);padding-bottom:4px}
+.kv{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.kv>div{flex:1 1 46%;background:#f7f9f8;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.kv .k{font-size:11px;color:var(--sub)}
+.kv .v{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#eef2f0;color:var(--sub)}
+.pill.ok{background:#e6f4ec;color:var(--green)}
+.pill.warn{background:#fdf7ef;color:#9a5a12}
+.pill.bad{background:#fdf1ee;color:#b03a2e}
+.limit{margin-top:10px;padding:10px 11px;border-radius:10px;font-size:12.5px;line-height:1.65;font-weight:600;display:none}
+.approxL{margin-top:10px;padding:9px 11px;border-radius:10px;background:#f4f7fb;border:1px solid #d7e2ef;color:#33475b;font-size:12.5px;line-height:1.6;display:none}
+.approxL b{color:#1f3a52}
+.approxL .v{font-variant-numeric:tabular-nums;font-weight:600}
+.gradeGrid{display:flex;gap:6px;margin-top:6px}
+.gradeGrid>div{flex:1;min-width:0;background:#f7f9f8;border:1px solid var(--line);border-radius:10px;padding:8px 5px;text-align:center}
+.gradeGrid .k{font-size:11px;color:var(--sub)}
+.gradeGrid .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gradeGrid .d{font-size:10.5px;color:var(--sub);white-space:nowrap}
+.tag{display:inline-block;font-size:9.5px;padding:0 4px;border-radius:5px;background:#eef2f0;color:var(--sub);font-weight:600;margin-left:2px;vertical-align:1px}
+.tag.m{background:#e6f4ec;color:#17603c}
+.tag.l{background:#eef3fb;color:#2e5a8a}
+.tag.x{background:#fdf1ee;color:#b03a2e}
+.why{margin-top:8px;font-size:11.5px;color:var(--sub);line-height:1.7}
+.why b{color:var(--ink)}
+.why ul{margin:3px 0 0;padding-left:16px}
+.why li{margin:1px 0}
+.limit.red{display:block;background:#fdf1ee;border:1px solid #f3cfc6;color:#b03a2e}
+.limit.green{display:block;background:#e6f4ec;border:1px solid #bfe3cf;color:#17603c}
+details summary{font-size:12.5px;color:var(--green);cursor:pointer;font-weight:600;padding:2px 0}
+.calc{font-size:12px;line-height:1.85;color:var(--ink);background:#fbfcfb;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px;overflow-x:auto}
+.calc b{color:var(--green)}
+/* 对比图 */
+.geoGrid{display:flex;gap:8px}
+.geoCell{flex:1;min-width:0;text-align:center}
+.geoCanvas{display:block;width:100%;aspect-ratio:1/1;height:auto;border-radius:10px;background:#0e1a15;border:1px solid var(--line);cursor:pointer}
+.thumbCap{font-size:10px;color:var(--sub);margin-top:3px;line-height:1.25;text-align:center}
+.geoSteps{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:8px;font-size:11.5px;color:var(--sub)}
+.geoSteps span{background:#f7f9f8;border:1px solid var(--line);border-radius:8px;padding:3px 7px;white-space:nowrap}
+.geoSteps i{font-style:normal;color:#a9b6b0}
+/* 弹层 */
+.modal{position:fixed;inset:0;background:rgba(15,26,21,.62);z-index:99;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal.hide{display:none}
+.modalBox{background:#fff;border-radius:14px;padding:12px;max-width:520px;width:100%;max-height:92vh;overflow:auto}
+.modalHead{display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px;margin-bottom:10px}
+.cmpGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmpItem img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:10px;background:#0e1a15;display:block}
+.cmpCap{font-size:11px;color:var(--sub);text-align:center;margin-top:6px;line-height:1.35}
+/* 实验模式 */
+.exp{border:1px dashed #d8c9b3;background:#fffdf8;border-radius:14px;padding:12px;margin-bottom:12px}
+.exp summary{color:#9a5a12}
+.subgrid{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.subgrid>.sub{flex:1;min-width:228px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px}
+.subgrid>.sub h3{font-size:12.5px;margin:0 0 5px;font-weight:700;color:#9a5a12}
+.pickWrap{position:relative;display:block;overflow:hidden;border-radius:10px;font-weight:600;font-size:12.5px;padding:10px 12px;cursor:pointer;background:#eef2f0;color:var(--ink);text-align:center}
+.pickWrap>input[type=file]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;z-index:2;font-size:100px;cursor:pointer}
+.num3{display:flex;gap:6px;margin-top:6px}
+.num3 input,.exp select{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:12px;font-family:inherit;min-width:0}
+.footer{text-align:center;font-size:11px;color:#9aa8a2;margin-top:6px}
+.exp summary{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.optTag{font-size:10.5px;font-weight:600;color:#9a5a12;background:#fff7ea;border:1px solid #ecd9b7;border-radius:8px;padding:2px 7px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header><div class="logo">🍎</div><h1>鲜切苹果褐变货架期预测系统</h1></header>
+
+  <div class="stage"><div id="s1">① 拍摄条件</div><div id="s2">② 采集 · 校验</div><div id="s3">③ 趋势结果</div></div>
+
+  <!-- 拍摄条件（不编号） -->
+  <div class="card">
+    <h2>拍摄条件（一次性设置）</h2>
+    <div class="btnrow" style="margin-top:2px">
+      <button class="btn-primary" id="btnStart">开启相机（申请权限 · 自动画质设置）</button>
+    </div>
+    <div class="note" id="camNote" style="margin-top:6px"></div>
+    <details class="exp" id="guideBox" style="margin-top:8px">
+      <summary><b>画质设置引导（自动设置不可用时的手动兜底，一次性）</b></summary>
+      <div class="note" style="margin-top:6px">
+        <b>① 关闭 HDR / 自动增强</b>：iPhone：「设置 → 相机」关闭「智能 HDR」；安卓：相机 App → 设置，关闭 HDR、AI 增强、自动美化。<br>
+        <b>② 锁定测光与对焦</b>：对准苹果切面<b>长按屏幕</b>，出现「AE/AF 锁定」提示后不再触碰屏幕。<br>
+        <b>③ 固定用主摄（1×）</b>：不要切换超广角/长焦，不要开夜景模式。<br>
+        <b>④ 回到本页面重新取景</b>：全程同一光源、手机不挪位。若页面内长按无响应，先在系统相机里设置好再回来。
+      </div>
+    </details>
+    <label class="pledge" id="pledgeBox">
+      <input type="checkbox" id="pledge">
+      <span>我保证<b>同设备、同光源、机位不动</b>，背景用<b>哑光灰垫/白纸</b>铺满（占画面 20%–40%）——勾选后才给出剩余时间</span>
+    </label>
+  </div>
+
+  <!-- 基准照/自建参考色卡（可选，不编号，可下拉） -->
+  <details class="exp" id="baseCard">
+    <summary><b>基准照/自建参考色卡</b>（可选，推荐）<span class="optTag">用于基准口径计算</span></summary>
+    <div class="note" style="margin-top:6px">
+      推荐：<b>刚切开苹果的第一时间拍摄（或上传）一张基准照</b>，记为 <b>0 min</b>，结果区按基准口径展示。
+    </div>
+    <div class="subgrid">
+      <div class="sub">
+        <h3>样品基准照（刚切好 0 min）</h3>
+        <div class="pickWrap">选择基准照图片<input type="file" id="fileBase" accept="image/*"></div>
+        <div class="note" id="baseStat" style="margin-top:6px">未设置</div>
+      </div>
+      <div class="sub">
+        <h3>自建参照 / 色卡（已知真值）</h3>
+        <div class="pickWrap">选择参照照<input type="file" id="fileRef" accept="image/*"></div>
+        <select id="refType" style="margin-top:6px">
+          <option value="white">A4 白纸（95, 0, 0）</option>
+          <option value="gray">18% 灰卡（50, 0, 0）</option>
+          <option value="custom">自定义</option>
+        </select>
+        <div class="num3">
+          <input type="number" id="refL" value="95" step="0.1" aria-label="参照 L">
+          <input type="number" id="refA" value="0" step="0.1" aria-label="参照 a">
+          <input type="number" id="refB" value="0" step="0.1" aria-label="参照 b">
+        </div>
+        <div class="note" id="refStat" style="margin-top:6px">未设置</div>
+        <div class="calc hide" id="refOut" style="margin-top:6px"></div>
+      </div>
+    </div>
+    <div class="calc hide" id="baseOut" style="margin-top:10px"></div>
+    <div class="btnrow" style="margin-top:10px">
+      <button class="btn-ghost" id="btnReset" style="flex:1;font-size:12.5px;padding:9px">新建批次（清空数据点，重新开始）</button>
+    </div>
+  </details>
+
+  <!-- 1 选择方式 -->
+  <div class="card">
+    <h2><span class="badge">1</span>选择方式</h2>
+    <div style="display:flex;gap:10px">
+      <div class="pickWrap" style="flex:1">📁 直接上传图片<input type="file" id="fileUp" accept="image/*"></div>
+      <button class="btn-primary" id="btnLive" style="flex:1;width:auto">📷 实时拍摄</button>
+    </div>
+    <div class="note" id="upStat" style="margin-top:8px">仅识别苹果切面：上传照片若<b>主体不是苹果</b>或检出其他物体将<b>直接驳回</b>；实时拍摄对主体/异物/反光/远近给出<b>实时提示</b>。</div>
+  </div>
+
+  <!-- 2 实时拍摄 -->
+  <div class="card" id="card2">
+    <h2><span class="badge">2</span>实时拍摄（取景与快门）</h2>
+    <div class="note" id="livePlaceholder">尚未开启取景：点击下方「📷 实时拍摄」展开取景框；再次点击可收起。</div>
+    <div class="hide" id="liveArea">
+      <div class="videoWrap">
+        <video id="video" autoplay playsinline muted></video>
+        <div class="roi" id="roi"></div>
+        <div class="hintbar" id="hint">开启相机后，把样品放进虚线框</div>
+      </div>
+      <button class="btn-dark" id="btnShoot" disabled>按快门（5 帧中值）</button>
+      <div class="note" id="shootMsg" style="margin-top:8px"></div>
+    </div>
+
+    <div class="hide" id="geoBlock" style="margin-top:12px">
+      <div class="geoGrid">
+        <div class="geoCell">
+          <canvas id="origC" width="200" height="200" class="geoCanvas" title="点击放大查看"></canvas>
+          <div class="thumbCap">取景原图</div>
+        </div>
+        <div class="geoCell">
+          <canvas id="corrPrev" width="256" height="256" class="geoCanvas" title="点击放大查看"></canvas>
+          <div class="thumbCap">固定 ROI · 256×256</div>
+        </div>
+      </div>
+      <div class="geoSteps"><span>① 固定机位取景</span><i>→</i><span>② 固定 ROI 裁切</span><i>→</i><span>③ 缩放 256×256</span></div>
+      <div class="note" style="margin-top:5px">ROI 位置与大小固定，不做自动主体检测；只裁切·缩放，<b>不改颜色</b>。点击任一图放大。</div>
+    </div>
+  </div>
+
+  <!-- 3 校验 -->
+  <div class="card">
+    <h2><span class="badge">3</span>本次校验（自动阻断快门）</h2>
+    <div class="gate" id="gate"><div class="grow"><span class="dot">·</span><span>等待相机…</span></div></div>
+  </div>
+
+  <!-- 4 结果 -->
+  <div class="card">
+    <h2><span class="badge">4</span>结果</h2>
+    <div id="resEmpty" class="note">还没有记录。</div>
+
+    <!-- 基准照路径：内置 Prompt B（有基线 with_baseline）—— 输出总货架期 + 剩余时间 -->
+    <div id="resBase" class="hide">
+      <div class="kv" style="margin-top:0">
+        <div><div class="k">贮藏温度 T（℃，实测区间 20.6–30.5，必填）</div>
+          <input id="bT" type="number" step="0.1" placeholder="如 22" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit"></div>
+        <div><div class="k">ΔBI_end 终点阈值（默认优先 ΔE=3 反解；候选值 20 仅兜底，仅在反解失败/无基线时使用，置信 C）</div>
+          <input id="bEnd" type="number" step="0.01" value="20" placeholder="默认 20" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit"></div>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:flex-start;gap:8px">
+        <button id="btnRetestB" class="btn-ghost" style="flex:0 0 auto;padding:9px 16px;font-size:13px">↻ 重测</button>
+        <div class="note" style="flex:1">温度填错了可随时改：修改上方 T / ΔBI_end 后点「重测」，用<b>当前这张图</b>按新设定重算 k_BI、剩余时间与总货架期（不重新拍照）。</div>
+      </div>
+      <div id="resDetailB">
+      <div class="bigWrap"><div class="bigNum" id="bNum">—</div><div class="bigUnit" id="bUnit">分钟（剩余时间：当前 → ΔE=3 终点）</div></div>
+      <div class="note" id="bConcl" style="margin-top:2px"></div>
+      <div class="kv">
+        <div><div class="k">BI(0) 基线</div><div class="v" id="bBI0">—</div></div>
+        <div><div class="k">当前进度 ΔBI(t)</div><div class="v" id="bDbi">—</div></div>
+        <div><div class="k">k_BI(T)（查表/内插）</div><div class="v" id="bK">—</div></div>
+        <div><div class="k">终点 ΔBI_end</div><div class="v" id="bTc">—</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">进度 · 剩余 · <b>总货架期（自 t=0 起算）</b> · 区间：</div>
+      <div class="gradeGrid" id="bGrades"></div>
+      <div class="approxL" id="bApprox"></div>
+      <div class="limit" id="bLimit"></div>
+      <details style="margin-top:6px"><summary>计算过程（按固定顺序，代入本次真实数据）</summary>
+        <div class="calc" id="bCalc"></div></details>
+      <details style="margin-top:6px"><summary>本次采样记录</summary>
+        <div class="calc" id="bRec"></div></details>
+      <details style="margin-top:6px"><summary>模型与口径说明（有基线 with_baseline）</summary>
+        <div class="calc">
+          <b>模式</b>：有基线 —— 上传基准照后以它为 t=0，输出<b>总货架期</b>（自 t=0 起算）与<b>剩余时间</b>，必须给区间与置信。<br>
+          · BI（标准式，全程不换）：x=(a*+1.75L*)/(5.645L*+a*−3.012b*)，BI=100×(x−0.31)/0.172；ΔBI 只配 k_BI、ΔE 只配 k_E，严禁交叉。<br>
+          · 预处理：t=0 与当前各做一遍：固定 ROI → 剔高光 → 多帧中值。<br>
+          · 取 k：查 k_BI(T) 实测表（20.6/21.1/23.6/30.5℃；25.5/25.8℃ [禁用] 已剔除）；表内两温度之间线性内插；区间外禁止外推；≤4℃ 禁用。<br>
+          · ΔBI_end：<b>默认优先 ΔE=3 反解</b>（每次都先尝试，不是用户填了才反解）—— 由 t=0 基线逐点算 ΔE，首次≥3 的相邻区间线性插值反解 [实测]，交叉点须落在 0–35 min 窗内，窗外 → 标「外推」，置信最高 C；<b>预设 20 仅为兜底候选值（[候选·待配置]，仅为算例）</b>：仅当反解失败（全程 ΔE&lt;3 / 时序不足）或模式 A 无 ΔE 序列时退回，一旦走兜底<b>置信自动降 C</b>；用户手动强制指定其他数值同样按兜底处理。<br>
+          · 拟合窗口 0 / 15 / 30 min（3 点）[默认]：k_BI 实测表即按此窗口拟合，运行时查表取 k，不再现场拟合。<br>
+          · T_rem=(ΔBI_end−ΔBI(t))/k；t_s=ΔBI_end/k；校核 t_s≈t+T_rem，不一致记录校核差异。<br>
+          · 区间：u_k=max(1−R², CV/√n)（CV 未提供 → 取 1−R²）；k_low/high 与 ΔBI_end 的 low/high 组合取最宽。<br>
+          · δ 抵消判定：标准式 BI → δ 仅近似抵消 → 灵敏度 δ∈{(0,0,0),(3,2,5),(5,3,12)}：漂移&lt;0.5→A；0.5–1.5→B；&gt;1.5→C（须参照校正或改线性式）。未提供参照 → 标「δ 未知」。<br>
+          · 硬约束：数字只来自输入与参数表；C 级仅供参考；温度只在实测区间内插值。<br>
+          <b>参数标注</b>：<span class="tag m">实测</span> 来自本次数据/参数表；<span class="tag l">默认</span> 引擎内置判据；<span class="tag l">待配置</span> 用户给定或推荐默认（ΔBI_end=20、w=2.5、窗口 0/15/30）；<span class="tag x">禁用</span> 已关闭。
+          <br><br><b style="color:var(--green)">褐变等级书面定义（模式 B · 有基线，按 ΔBI 增量判定）</b>
+          <table style="width:100%;border-collapse:collapse;font-size:11px;margin-top:5px;line-height:1.4">
+            <tr style="background:#eef2f0"><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">等级</th><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">判定（ΔBI 增量）</th><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">书面定义</th><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">处置建议</th></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">Ⅰ 浅褐</td><td style="border:1px solid var(--line);padding:4px 5px">ΔBI(t) &lt; 5</td><td style="border:1px solid var(--line);padding:4px 5px">切开后新增褐变程度低，人眼几乎不可察觉，ΔE &lt; 3</td><td style="border:1px solid var(--line);padding:4px 5px">常规周期复检</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">Ⅱ 中褐</td><td style="border:1px solid var(--line);padding:4px 5px">5 ≤ ΔBI(t) &lt; 10</td><td style="border:1px solid var(--line);padding:4px 5px">少量新增褐变，可微弱观察到颜色改变</td><td style="border:1px solid var(--line);padding:4px 5px">缩短复检间隔</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">Ⅲ 重褐</td><td style="border:1px solid var(--line);padding:4px 5px">10 ≤ ΔBI(t) &lt; 15</td><td style="border:1px solid var(--line);padding:4px 5px">明显新增褐变，肉眼可识别褐变现象</td><td style="border:1px solid var(--line);padding:4px 5px">加严复检，优先出清</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">Ⅳ 褐变终点</td><td style="border:1px solid var(--line);padding:4px 5px">ΔBI(t) ≥ ΔBI_end</td><td style="border:1px solid var(--line);padding:4px 5px">达到人眼可察觉褐变临界；优先由 ΔE≥3 反解，无反解时采用参考值 20</td><td style="border:1px solid var(--line);padding:4px 5px">强制下架销毁</td></tr>
+          </table>
+          <b>ΔBI_end 是什么</b>：鲜切苹果从切开到不可接受为止允许产生的最大褐变增量（褐变终点对应的 ΔBI 阈值）。它不是某一时刻的 BI 绝对值，而是「和 t=0 基准相比，颜色变了多少就算报废」的判定线。默认优先由同一样品时序照片的 ΔE(t) 首达 3 线性插值反解；反解失败才退回参考值 20（兜底，置信 C）。
+          <br><b>货架期输出口径（模式 B · 有基线）</b>：输入 = 同一样品 t=0 基准照 + 时序照片 → 判定依据 = 真实 ΔBI(t)=BI(t)−BI₀ → 给出具体时间数值（剩余货架期 T_rem、总货架期 t_s）+ 置信等级 A/B/C + 误差区间；无 t=0 基准照则退化为区间/趋势结论。
+          <br><b>局限性说明（SOP）</b>：① 缺 t=0 基准照时无法计算 ΔBI，BI 绝对值受个体底色与拍摄偏色影响；② 速率数据集仅 4 组实测温度（23.6–30.5℃ 跨度大），内插存在固有预测误差，区间外禁止外推；③ 样品常现「前期快速褐变、后期平台震荡」，与动力学持续增长假设不完全匹配，平台阶段解释能力受限；④ 本研究 25℃ 时序实验不进入系统数据集，仅作论文外部验证样本。
+        </div></details>
+      </div>
+    </div>
+
+    <!-- 无基线模式（内置 Prompt A）：只有当前一张图，全程不用 t=0 的任何值 -->
+    <div id="resNon" class="hide">
+      <div class="kv" style="margin-top:0">
+        <div><div class="k">贮藏温度 T（℃，实测区间 20.6–30.5，必填）</div>
+          <input id="nT" type="number" step="0.1" placeholder="如 22" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit"></div>
+        <div><div class="k">ΔBI_end 终点阈值</div>
+          <input id="nEnd" type="number" step="0.01" value="20" placeholder="默认 20" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit"></div>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:flex-start;gap:8px">
+        <button id="btnRetestN" class="btn-ghost" style="flex:0 0 auto;padding:9px 16px;font-size:13px">↻ 重测</button>
+        <div class="note" style="flex:1">温度填错了可随时改：修改上方 T / ΔBI_end 后点「重测」，用<b>当前这张图</b>按新设定重算 k_BI 与三档剩余变化时间（不重新拍照）。</div>
+      </div>
+      <div id="resDetailN">
+      <div class="bigWrap"><div class="bigNum" id="remNum">—</div><div class="bigUnit" id="remUnit">当前褐变指数 BI（只取决于图像，与温度无关）</div></div>
+      <div class="note" id="remRange" style="margin-top:2px"></div>
+      <div class="kv">
+        <div><div class="k">BI（绝对值）</div><div class="v" id="kvBI">—</div></div>
+        <div><div class="k">k_BI(T)（查表/内插）</div><div class="v" id="kvK">—</div></div>
+        <div><div class="k">终点 ΔBI_end</div><div class="v" id="kvEnd">—</div></div>
+        <div><div class="k">置信</div><div class="v" id="kvRem">—</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">剩余变化时间：</div>
+      <div class="gradeGrid" id="nGrades"></div>
+      <div class="approxL" id="approxLab"></div>
+      <div class="limit" id="limitNote"></div>
+
+      <details style="margin-top:10px"><summary>计算过程（代入本次真实数据）</summary>
+        <div class="calc" id="calcBox"></div></details>
+      <details style="margin-top:6px"><summary>本次测量记录</summary>
+        <div class="calc" id="recBox"></div></details>
+      <details style="margin-top:6px"><summary>模型与口径说明（无基线 no_baseline）</summary>
+        <div class="calc">
+          <b>模式</b>：无基线 —— 输入只有当前一张图，没有 t=0 基准图，<b>全程不使用任何 t=0 的值</b>。<br>
+          · 只输出「剩余变化时间」（当前状态到指定档位还需要多久）；<b>绝不输出总货架期</b>（缺 t=0 起点，无法定义总时长）。<br>
+          · BI（标准式，全程不换）：x=(a*+1.75L*)/(5.645L*+a*−3.012b*)，BI=100×(x−0.31)/0.172；ΔBI 只配 k_BI。<br>
+          · 输入契约：缺 T、缺当前 L*a*b*、缺 ΔBI_end → 停止计算报「缺数据」，不得自行假设。<br>
+          · 分档：浅 5 / 中 10 / 重 15 / 已达终点 ≥20 [候选·待配置]，档位半宽 w=2.5 [默认]；品种均值 [待定]、分类器未配置 → 禁止用 BI 绝对值猜档位，只输出三档候选表。<br>
+          · 取 k：查 k_BI(T) 实测表（20.6/21.1/23.6/30.5℃；25.5/25.8℃ [禁用] 已剔除）；区间内线性内插；区间外禁止外推只给区间；≤4℃ 禁用。<br>
+          · 拟合窗口 0 / 15 / 30 min（3 点）[默认]：k_BI 实测表即按此窗口拟合，运行时查表取 k，不再现场拟合。<br>
+          · ΔBI_end=20 [候选·待配置]：模式 A 无 t=0 基准、算不出 ΔE 序列，<b>无法反解</b>，故只能使用候选值（已按推荐值预填，仅为算例，须用户确认），输入框可修改；<b>一经使用结果最高 C 级</b>（按兜底处理）。<br>
+          · T_rem=(ΔBI_end−BI_d)/k；区间 = 档位不确定 T_rem±w/k（ΔBI_end 只有单点 → 只取档位半宽）。<br>
+          · 边界：T_rem&lt;0 或已达终点 → 「已达/超过终点」；&gt;35 min → 轻度外推（给倍数）；&gt;3×35 min → 只给区间。<br>
+          · 置信：本模式最高只到 B；候选/待定参数一旦使用 → C；k 来自 R²=0.784 的组 → 不高于 B。<br>
+          · 本模式不做偏色校正（δ 未知，并入区间与降级）；不做感官评价。<br>
+          <b>参数标注</b>：<span class="tag m">实测</span> 来自参数表；<span class="tag l">默认</span> 方法内置；<span class="tag l">待配置</span> 须用户确认；<span class="tag x">缺数据</span> 未提供。
+          <br><br><b style="color:var(--green)">褐变等级书面定义（模式 A · 无基线，仅 BI 绝对值筛查参考）</b>
+          模式 A 没有 t=0 基准，无法计算 ΔBI(t)，档位仅为 <b>BI 绝对值</b> 筛查参考档位，会受苹果先天果肉底色、拍摄光照与色偏 δ 干扰，<b>不能代表真实新增褐变</b>。模式 A 输出的褐变等级与剩余变化时间<b>置信上限固定为 C 级</b>，仅用于现场快速筛查，<b>不可作为正式处置与货架期判定依据</b>。
+          <table style="width:100%;border-collapse:collapse;font-size:11px;margin-top:5px;line-height:1.4">
+            <tr style="background:#eef2f0"><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">候选档位</th><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">BI 绝对值参考</th><th style="border:1px solid var(--line);padding:4px 5px;text-align:left">说明</th></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">浅褐</td><td style="border:1px solid var(--line);padding:4px 5px">BI &lt; 5</td><td style="border:1px solid var(--line);padding:4px 5px">仅筛查参考，不代表真实新增褐变</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">中褐</td><td style="border:1px solid var(--line);padding:4px 5px">5 ≤ BI &lt; 10</td><td style="border:1px solid var(--line);padding:4px 5px">受底色/偏色干扰，仅供筛查</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">重褐</td><td style="border:1px solid var(--line);padding:4px 5px">10 ≤ BI &lt; 15</td><td style="border:1px solid var(--line);padding:4px 5px">受底色/偏色干扰，仅供筛查</td></tr>
+            <tr><td style="border:1px solid var(--line);padding:4px 5px">褐变终点（参考）</td><td style="border:1px solid var(--line);padding:4px 5px">BI ≥ 20</td><td style="border:1px solid var(--line);padding:4px 5px">参考值 20 仅算例，置信 C</td></tr>
+          </table>
+          <b>货架期输出口径（模式 A · 无基线）</b>：输入 = 单张照片、无 t=0 基准 → 判定依据 = BI 绝对值（受底色/偏色干扰）→ <b>禁止输出总货架期</b>；仅给三档「剩余变化时间」粗参考，或区间/趋势结论，<b>固定 C 级、仅供参考</b>。
+          <br><b>局限性说明（SOP）</b>：① 无 t=0 基准照，无法算 ΔBI，BI 绝对值受个体底色与拍摄偏色影响；② 速率数据集仅 4 组实测温度（23.6–30.5℃ 跨度大），内插存在固有误差，区间外禁止外推；③ 样品常现「前期快速褐变、后期平台震荡」，动力学持续增长假设在平台阶段解释能力受限；④ 本研究 25℃ 时序实验不进入系统数据集，仅作论文外部验证样本。
+        </div></details>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">离线单文件 · 本地计算 · 只做褐变计算，不含微生物/食品安全结论</div>
+</div>
+
+<!-- 前后对比弹层 -->
+<div id="cmpModal" class="modal hide">
+  <div class="modalBox">
+    <div class="modalHead"><span>取景与固定 ROI 对比</span><button class="btn-ghost" id="cmpClose" style="padding:6px 12px">关闭</button></div>
+    <div class="cmpGrid">
+      <div class="cmpItem"><img id="cmpBefore" alt="取景原图"><div class="cmpCap">取景原图（未裁切）</div></div>
+      <div class="cmpItem"><img id="cmpAfter" alt="固定 ROI"><div class="cmpCap">固定 ROI（裁切 · 256×256）</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   spec 固定值集中在此，改参数只改这里
+   ============================================================ */
+const P={
+  SIZE:256,          /* 分析边长 */
+  ROI:0.60,          /* 固定 ROI：短边 60%，画面正中 */
+  FRAMES:5,          /* 每快门取 5 帧，逐像素中值 */
+  SPEC_V:0.97,       /* V>0.97 视为高光，剔除该像素 */
+  OVER:250,          /* 任一通道≥250 视为过曝像素 */
+  OVER_MAX:0.010,    /* 过曝占比上限 1% */
+  MAT_MIN:0.20, MAT_MAX:0.40,  /* 灰垫占画面 20%–40% */
+  MAT_RGB_TOL:42,    /* 灰垫像素判定的 RGB 欧氏距离 */
+  LUMA_MIN:0.25, LUMA_MAX:0.85,
+  TILT_MAX:5,        /* 倾斜 ≤5° */
+  RING_DE:3.0,       /* 参照块相对基线 ΔE 上限 */
+  FOR_S:0.5,         /* 异物判定：饱和度下限 */
+  FOR_HMIN:75, FOR_HMAX:345,  /* 异物色相带：绿/青/蓝/紫（避开苹果果肉的暖色与红皮） */
+  FOR_MAX:0.08,      /* 异物像素占 ROI 上限 8% */
+  AFR_MIN:0.45,      /* 苹果主体候选占 ROI 下限 45%（太远/主体不对会低于此） */
+  SPEC_WARN:0.08     /* 高光反光占 ROI 上限 8%（角度提示项） */
+};
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ===== 内置 Prompt 双模式参数表（A 无基线 / B 有基线，两段完全独立） ===== */
+const KTAB=[ /* k_BI 实测表：只对应标准式 BI（min⁻¹）；ΔBI 只配 k_BI，严禁与 ΔE/k_E 交叉 */
+  {T:20.6,k:0.3934,r2:0.974},
+  {T:21.1,k:0.3932,r2:0.9856},   /* 与 20.6℃ 可视作同值 */
+  {T:23.6,k:0.3257,r2:0.9787},   /* k 回落、非单调，不得据此修正其他组 */
+  {T:30.5,k:0.5884,r2:0.784}     /* 置信不高于 B */
+];
+/* 25.5℃(k=0.0721,R²=0.3602) / 25.8℃(k=0.0930,R²=0.4934)：[禁用] 异常组，已剔除，不参与任何查表/内插/建模 */
+/* 本研究自有 25℃ 时序实验（R²=0.5155）不写入 KTAB、不参与建模，仅作论文外部验证样本，用于评估插值预测偏差 */
+const KCONF={TMIN:20.6,TMAX:30.5,W:2.5,WIN:35,ECAP:105}; /* 实测区间 / 档位半宽 / 实测窗 / 3×窗 */
+const GRADE_A=[{n:'浅褐',bid:5},{n:'中褐',bid:10},{n:'重褐',bid:15}]; /* BI_d [候选·待配置]；已达终点 ≥20 */
+const DELTAS=[[3,2,5],[5,3,12]]; /* δ 灵敏度组合（CIELAB 单位；(0,0,0) 为基准） */
+function getNum(id){const v=parseFloat($(id).value);return isFinite(v)?v:null;}
+/* 查表取 k_BI(T)：区间内线性内插；区间外 → 禁止外推（仅用边界值给区间）；≤4℃ 禁用 */
+function kLookup(Tc){
+  if(!isFinite(Tc))return {status:'missing'};
+  if(Tc<=4)return {status:'disabled'};
+  if(Tc<KCONF.TMIN||Tc>KCONF.TMAX){
+    const b=Tc<KCONF.TMIN?KTAB[0]:KTAB[KTAB.length-1];
+    return {status:'outside',k:b.k,r2:b.r2};
+  }
+  for(let i=0;i<KTAB.length;i++){ if(Math.abs(KTAB[i].T-Tc)<1e-9)return {status:'ok',k:KTAB[i].k,r2:KTAB[i].r2,src:'实测'}; }
+  for(let i=1;i<KTAB.length;i++){
+    if(Tc>KTAB[i-1].T&&Tc<KTAB[i].T){
+      const a=KTAB[i-1],b=KTAB[i];
+      return {status:'ok',k:a.k+(b.k-a.k)*(Tc-a.T)/(b.T-a.T),r2:Math.min(a.r2,b.r2),src:'线性内插 '+a.T+'–'+b.T+'℃'};
+    }
+  }
+  return {status:'missing'};
+}
+
+/* ===== 颜色 ===== */
+function s2l(u){u/=255;return u<=0.04045?u/12.92:Math.pow((u+0.055)/1.055,2.4);}
+function rgb2lab(r,g,b){
+  const R=s2l(r),G=s2l(g),B=s2l(b);
+  const X=(R*0.4124+G*0.3576+B*0.1805)/0.95047;
+  const Y=(R*0.2126+G*0.7152+B*0.0722);
+  const Z=(R*0.0193+G*0.1192+B*0.9505)/1.08883;
+  const f=t=>t>0.008856?Math.cbrt(t):(7.787*t+16/116);
+  const fx=f(X),fy=f(Y),fz=f(Z);
+  return [116*fy-16,500*(fx-fy),200*(fy-fz)];
+}
+function dE(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);}
+/* 异物检测：仅识别苹果切面——高饱和的绿/青/蓝/紫色块视为异物 */
+function rgb2hsv(r,g,b){
+  r/=255;g/=255;b/=255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;
+  let h=0;
+  if(d>0){
+    if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;
+    h*=60;if(h<0)h+=360;
+  }
+  return [h,mx?d/mx:0,mx];
+}
+/* 主体统计（一次遍历）：
+   fo = 疑似异物冷色块占比（高饱和绿/青/蓝/紫）
+   af = 苹果主体候选占比（排除高光/过曝/灰垫/异物后的像素） */
+function subjectStats(d,matRGB){
+  let fo=0,af=0,n=0;
+  for(let i=0;i<d.data.length;i+=4){
+    const R=d.data[i],G=d.data[i+1],B=d.data[i+2];
+    const mx=Math.max(R,G,B);
+    n++;
+    const hv=rgb2hsv(R,G,B);
+    if(hv[1]>P.FOR_S&&hv[0]>=P.FOR_HMIN&&hv[0]<=P.FOR_HMAX){fo++;continue;}
+    if(mx>=P.OVER||mx/255>P.SPEC_V)continue;
+    if(matRGB&&Math.hypot(R-matRGB[0],G-matRGB[1],B-matRGB[2])<P.MAT_RGB_TOL)continue;
+    af++;
+  }
+  return {fo:n?fo/n:0,af:n?af/n:0};
+}
+/* 上传图边缘 3% 均值（灰垫参照色，供主体判定排除灰垫） */
+function edgeMatRGB(im){
+  const W=160,H=Math.max(4,Math.round(160*im.height/im.width));
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,W,H);
+  const d=x.getImageData(0,0,W,H).data;
+  let r=0,g=0,b=0,n=0;
+  const bw=Math.max(2,Math.round(W*0.03)),bh=Math.max(2,Math.round(H*0.03));
+  for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++){
+    if(!(yy<bh||yy>=H-bh||xx<bw||xx>=W-bw))continue;
+    const i=(yy*W+xx)*4;r+=d[i];g+=d[i+1];b+=d[i+2];n++;
+  }
+  return n?[r/n,g/n,b/n]:null;
+}
+/* 褐变指数（仅内部换算，界面只展示其差分） */
+function BI(l){const L=l[0],a=l[1],b=l[2];const x=(a+1.75*L)/(5.645*L+a-3.012*b);return 100*(x-0.31)/0.172;}
+
+/* ===== 模型 v3：poly2 岭回归（原始 RGB + as-shot Lab）；只用于给「近似色值」，不参与 k 与时间计算 ===== */
+const MODEL={coef:[
+[-0.3270014739770842,1.4457148956438817,1.4352586751698204,0.8891092711990888,-2.197601786340133,-0.5351513437673208,-0.9312742236740199,0.9312742236740218,-0.2740348781948729,1.0225189687577012,1.1862866012263578,0.6106838643516481,-1.5605024479480816,-0.6378983745323029,-0.3699536897712425,0.04295221579417264,1.943649738294907,1.485785717195138,1.662301297760503,-1.3367348525618241,0.29712929887377576,1.1285711645853187,0.31714373105856875,0.7324838008272356,1.382428204895457,-0.6500655027020512,0.8741482462811769,1.8327599320970613,-0.39750125692719235,1.3353302242445122,-1.4269164358336806,0.022369065888811986,0.6438275020863496,0.24528176911270144,-0.001140213533123278,-0.9734559053385368,-1.6707851765103339,-0.5268166098298035,-1.0414601024697367,-1.4227189630833013,0.8875676193159548,-0.9312742236739977,0.0,0.9312742236739974],
+[0.01365514077057851,-0.9817862536033712,-0.8422407813960241,-0.6990151189644158,1.1432431742729103,0.33747915276904206,0.5250579628602685,-0.5250579628602681,-0.02915277879599309,-0.6649542383954499,-0.5286650134787063,-0.48246770473296224,0.7393551446049534,0.16343685094060065,-0.2528259233939573,0.2664810641645337,-1.12047782317479,-0.8034842850734342,-1.0067594638940967,0.6178097030193366,-0.16692662030437247,-1.155899442984512,0.1741131893811275,-0.6526333075301505,-0.7434456071317755,0.3724980490877846,-0.060547503966995396,-1.100152325559675,0.25791154416364304,-0.8686718595086518,0.6714877838136007,-0.06148391368557929,-0.8713066370313419,0.17229151806690748,0.03558148710144406,0.3805926936158073,1.028238161226462,0.11500501304644899,0.052229889327099564,0.4656522025842156,-0.1281730498151859,0.5250579628602483,0.0,-0.5250579628602461],
+[0.006304579781426871,-1.7968408550359558,-1.8791317832787364,-1.2469844362159517,2.196336900092169,0.9044511987276022,1.8350873074561105,-1.8350873074561216,-0.24616631856728535,-1.3839498045880358,-1.2751694345773985,-1.0226484528399236,1.443288077658159,0.3875353331740083,-0.3787101126127021,0.3850146923941957,-2.171486797962045,-1.5579999329007483,-1.9411394903555113,1.2155089078166743,-0.43153807178476555,-2.2485269200243843,0.45168606498844033,-0.8796218752767178,-1.4860964226016067,0.608664493075831,-0.7578908350331368,-2.5426752690187615,0.6635434857399803,-1.664108442934868,1.312622057194924,-0.166685174298575,-1.6007536654364831,0.35376922922043563,0.032110356973211615,0.8933033112059033,2.219232392966875,-0.022895492874695108,0.8113237744493784,1.3592623750070882,-0.45481117627952033,1.835087307456003,0.0,-1.8350873074560028]],
+intercept:[59.99207278512972,4.754546743601051,31.49249556991042]};
+const POLY_TERMS=(()=>{const t=[];for(let i=0;i<8;i++)t.push([i]);for(let i=0;i<8;i++)for(let j=i;j<8;j++)t.push([i,j]);return t;})();
+function polyFeatures(b){return POLY_TERMS.map(p=>p.length===1?b[p[0]]:b[p[0]]*b[p[1]]);}
+function predictLab(rgb){
+  const aL=rgb2lab(rgb[0],rgb[1],rgb[2]);
+  const base=[rgb[0]/255,rgb[1]/255,rgb[2]/255,aL[0]/100,aL[1]/100,aL[2]/100,0,1];
+  const f=polyFeatures(base),o=[0,0,0];
+  for(let j=0;j<3;j++){let s=MODEL.intercept[j];for(let i=0;i<f.length;i++)s+=MODEL.coef[j][i]*f[i];o[j]=s;}
+  return o;
+}
+
+/* ===== 状态 ===== */
+let stream=null, liveTimer=null, gateOk=false, lastLive=null, frameCanvas=null, lastSt=null, lastImg=null, RETEST_N=0;
+const SYS={pledge:false,set:{},matRGB:null,ringBase:null,device:''};
+const BATCH={t0:0,base:null,pts:[],shots:0};
+const REF={lab:null,trueV:[95,0,0]};
+
+/* ============================================================
+   采集层
+   ============================================================ */
+function roiRect(w,h){const side=Math.min(w,h)*P.ROI;return {x:(w-side)/2,y:(h-side)/2,w:side,h:side};}
+
+async function startCam(){
+  $('btnStart').disabled=true;
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});
+  }catch(e){
+    $('camNote').innerHTML='<b style="color:var(--bad)">相机启动失败</b>：需要 https 环境与相机授权（'+String(e.message||e)+'）。请检查浏览器权限后重试；画质参数请按下方引导手动设置。';
+    $('guideBox').open=true;
+    $('btnStart').disabled=false;return;
+  }
+  const v=$('video');v.srcObject=stream;try{await v.play();}catch(e){}
+  const tr=stream.getVideoTracks()[0];
+  SYS.set=tr.getSettings?tr.getSettings():{};
+  SYS.device=(SYS.set.deviceId||'').slice(0,12);
+  const locked=await bestEffortLock(tr);
+  if(locked.length){
+    $('camNote').innerHTML='<b>画质设置</b>：✅ 已自动锁定 '+locked.join(' / ')+'（若拍摄中画面仍会变，请按下方引导手动处理）';
+    $('guideBox').open=false;
+  }else{
+    $('camNote').innerHTML='<b style="color:var(--warn)">画质设置</b>：本机浏览器不支持自动控制 HDR/白平衡/曝光，请按下方引导<b>手动设置一次</b>';
+    $('guideBox').open=true;
+  }
+
+  await sleep(400);
+  calibrateMat();
+  $('s1').classList.add('on');$('s2').classList.add('on');
+  if(liveTimer)clearInterval(liveTimer);
+  liveTimer=setInterval(liveTick,500);
+  openLive();
+  $('hint').textContent='把样品放进虚线框，保持手机不动';
+}
+
+/* 自动画质设置：尽力锁定 WB/AE/AF（HDR 网页层无法直接关闭）；失败不影响流程，走手动引导兜底 */
+async function bestEffortLock(tr){
+  const caps=tr.getCapabilities?tr.getCapabilities():{};
+  const want={whiteBalanceMode:'manual',exposureMode:'manual',focusMode:'manual'};
+  const req={},used=[];
+  for(const k in want){ if(Array.isArray(caps[k])&&caps[k].includes(want[k])){req[k]=want[k];used.push(k);} }
+  if(!used.length)return [];
+  try{ await tr.applyConstraints({advanced:[req]}); }catch(e){ return []; }
+  const s=tr.getSettings?tr.getSettings():{};
+  return used.filter(k=>s[k]==='manual');
+}
+
+/* 取景框展开 / 收起（收起时释放相机，重新展开会重新校准灰垫基线） */
+function openLive(){
+  $('liveArea').classList.remove('hide');
+  $('livePlaceholder').classList.add('hide');
+  $('btnLive').textContent='⬆ 收起取景';
+}
+function closeLive(){
+  $('liveArea').classList.add('hide');
+  $('livePlaceholder').classList.remove('hide');
+  $('btnLive').textContent='📷 实时拍摄';
+}
+function stopCam(){
+  if(liveTimer){clearInterval(liveTimer);liveTimer=null;}
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+  gateOk=false;
+  $('btnShoot').disabled=true;
+  $('gate').innerHTML='<div class="grow"><span class="dot">·</span><span>取景已收起，重新展开后自动恢复校验</span></div>';
+}
+
+/* 用画面四边 3% 的边框（灰垫）作为参照块基线 */
+function calibrateMat(){
+  const v=$('video'); if(!v.videoWidth)return;
+  const W=240,H=Math.round(240*v.videoHeight/v.videoWidth);
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(v,0,0,W,H);
+  const d=x.getImageData(0,0,W,H).data;
+  let r=0,g=0,b=0,n=0;
+  const bw=Math.max(2,Math.round(W*0.03)),bh=Math.max(2,Math.round(H*0.03));
+  for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++){
+    if(!(yy<bh||yy>=H-bh||xx<bw||xx>=W-bw))continue;
+    const i=(yy*W+xx)*4;r+=d[i];g+=d[i+1];b+=d[i+2];n++;
+  }
+  if(!n)return;
+  SYS.matRGB=[r/n,g/n,b/n];
+  SYS.ringBase=rgb2lab(SYS.matRGB[0],SYS.matRGB[1],SYS.matRGB[2]);
+}
+
+/* 单帧泛化分析：灰垫占比 / 过曝 / 亮度 / 倾斜 / 参照块漂移 */
+function analyzeLive(){
+  const v=$('video'); if(!v.videoWidth)return null;
+  const W=240,H=Math.round(240*v.videoHeight/v.videoWidth);
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(v,0,0,W,H);
+  const d=x.getImageData(0,0,W,H).data;
+  const N=W*H, mat=!!SYS.matRGB;
+  let matN=0,over=0,lum=0,lumN=0,r=0,g=0,b=0,rn=0,fo=0,foN=0,apple=0,spec=0;
+  const bw=Math.max(2,Math.round(W*0.03)),bh=Math.max(2,Math.round(H*0.03));
+  const side=Math.min(W,H)*P.ROI,x0=(W-side)/2,y0=(H-side)/2;
+  const mask=new Uint8Array(N);
+  for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++){
+    const p=yy*W+xx,i=p*4,R=d[i],G=d[i+1],B=d[i+2];
+    const mx=Math.max(R,G,B);
+    if(mx>=P.OVER)over++;
+    if(mat){
+      const dm=Math.hypot(R-SYS.matRGB[0],G-SYS.matRGB[1],B-SYS.matRGB[2]);
+      if(dm<P.MAT_RGB_TOL){mask[p]=1;matN++;}
+    }
+    const inROI=xx>=x0&&xx<x0+side&&yy>=y0&&yy<y0+side;
+    if(inROI){
+      foN++;
+      const hv=rgb2hsv(R,G,B);
+      const cold=hv[1]>P.FOR_S&&hv[0]>=P.FOR_HMIN&&hv[0]<=P.FOR_HMAX;
+      if(cold)fo++;
+      const hi=mx>=P.OVER||mx/255>P.SPEC_V;
+      if(hi){spec++;}
+      else{
+        lum+=(0.2126*R+0.7152*G+0.0722*B)/255;lumN++;
+        if(!cold&&!mask[p])apple++;
+      }
+    }
+    if(yy<bh||yy>=H-bh||xx<bw||xx>=W-bw){r+=R;g+=G;b+=B;rn++;}
+  }
+  const ringLab=rn?rgb2lab(r/rn,g/rn,b/rn):null;
+  return {
+    mat:matN/N, over:over/N, luma:lumN?lum/lumN:0,
+    tilt:tiltOf(mask,W,H), ringLab,
+    apple:foN?apple/foN:0, spec:foN?spec/foN:0, fo:foN?fo/foN:0,
+    ringDE:(ringLab&&SYS.ringBase)?dE(ringLab,SYS.ringBase):null
+  };
+}
+
+/* 灰垫上下边界的斜率 → 倾斜角；无法检出返回 null（不阻断） */
+function tiltOf(mask,W,H){
+  const top=[],bot=[];
+  for(let xx=0;xx<W;xx+=2){
+    let y=-1;for(let yy=0;yy<H;yy++){if(mask[yy*W+xx]){y=yy;break;}}
+    if(y>=0&&y<H*0.5)top.push([xx,y]);
+    let y2=-1;for(let yy=H-1;yy>=0;yy--){if(mask[yy*W+xx]){y2=yy;break;}}
+    if(y2>=0&&y2>H*0.5)bot.push([xx,y2]);
+  }
+  const use=top.length>bot.length?top:bot;
+  if(use.length<W*0.3)return null;
+  const n=use.length,sx=use.reduce((s,p)=>s+p[0],0)/n,sy=use.reduce((s,p)=>s+p[1],0)/n;
+  let sxy=0,sxx=0;use.forEach(p=>{sxy+=(p[0]-sx)*(p[1]-sy);sxx+=(p[0]-sx)*(p[0]-sx);});
+  if(!sxx)return null;
+  const a=sxy/sxx;
+  if(use.every(p=>p[1]===use[0][1]))return null;   /* 边界贴死画面边 → 未检出 */
+  return Math.atan(a)*180/Math.PI;
+}
+
+function evalGate(a){
+  return [
+    {name:'灰垫占画面',val:(a.mat*100).toFixed(0)+'%',ok:a.mat>=P.MAT_MIN&&a.mat<=P.MAT_MAX,hint:'20%–40%',
+      fix:a.mat<P.MAT_MIN?'距离太近或灰垫不够：请拉远一点，让灰垫占画面两成以上':'苹果太小或离太远：请把切面凑近，让灰垫降到四成以内'},
+    {name:'过曝像素',val:(a.over*100).toFixed(1)+'%',ok:a.over<P.OVER_MAX,hint:'<1%',
+      fix:'画面过曝：请减弱光线或避开直射强光'},
+    {name:'平均亮度',val:(a.luma*100).toFixed(0)+'%',ok:a.luma>=P.LUMA_MIN&&a.luma<=P.LUMA_MAX,hint:'25%–85%',
+      fix:a.luma<P.LUMA_MIN?'画面过黑：请增加均匀漫射光（不要开闪光）':'画面过亮：请减弱光线'},
+    {name:'画面倾斜',val:a.tilt==null?'未检出':a.tilt.toFixed(1)+'°',ok:a.tilt==null||Math.abs(a.tilt)<=P.TILT_MAX,hint:'≤5°',
+      fix:'角度过偏：请摆正手机，镜头正对切面'},
+    {name:'参照块偏移',val:a.ringDE==null?'—':'ΔE '+a.ringDE.toFixed(1),ok:a.ringDE==null||a.ringDE<P.RING_DE,hint:'<3',
+      fix:'光源或机位变了：请恢复原来的光照与手机位置'},
+    {name:'苹果主体识别',val:(a.apple*100).toFixed(0)+'%',ok:a.apple>=P.AFR_MIN,warnOnly:true,hint:'主体 ≥45%',
+      fix:'画面主体疑似不是苹果：请把苹果切面对准虚线框'},
+    {name:'异物检测（仅识别苹果）',val:(a.fo*100).toFixed(0)+'%',ok:a.fo<=P.FOR_MAX,warnOnly:true,hint:'疑似非苹果 <8%',
+      fix:'画面疑似有其他物体（仅识别苹果）：请移开后再拍'},
+    {name:'切面反光 / 角度',val:(a.spec*100).toFixed(0)+'%',ok:a.spec<=P.SPEC_WARN,warnOnly:true,hint:'≤8%',
+      fix:'切面反光过强或角度偏：请微调角度避开反光，改用漫射光'}
+  ];
+}
+
+function liveTick(){
+  const a=analyzeLive(); if(!a)return;
+  lastLive=a;
+  const rows=evalGate(a);
+  $('gate').innerHTML=rows.map(r=>`<div class="grow"><span class="dot ${r.ok?'ok':(r.warnOnly?'warn':'bad')}">${r.ok?'✓':(r.warnOnly?'⚠':'✕')}</span><span>${r.name} <span class="hint">(${r.hint})</span></span><span class="val">${r.val}</span></div>`).join('');
+  const blocking=rows.filter(r=>!r.warnOnly);
+  gateOk=blocking.every(r=>r.ok);
+  $('roi').className='roi'+(gateOk?' pass':'');
+  $('btnShoot').disabled=!gateOk;
+  const badBlock=blocking.filter(r=>!r.ok);
+  const warns=rows.filter(r=>r.warnOnly&&!r.ok);
+  if(badBlock.length){
+    $('hint').textContent='✕ '+badBlock[0].fix+(badBlock.length>1?'（还有 '+(badBlock.length-1)+' 项未通过）':'');
+  }else if(warns.length){
+    $('hint').textContent='⚠ '+warns.map(w=>w.fix).join('；');
+  }else{
+    $('hint').textContent='通过校验，可以按快门';
+  }
+}
+
+/* 逐像素中值（通用） */
+function medianOf(bufs){
+  const n=bufs.length, out=new ImageData(P.SIZE,P.SIZE), m=n>>1, tv=[0,0,0,0,0];
+  for(let p=0;p<P.SIZE*P.SIZE;p++){
+    for(let ch=0;ch<3;ch++){
+      for(let k=0;k<n;k++)tv[k]=bufs[k].data[p*4+ch];
+      for(let i=1;i<n;i++){const t=tv[i];let j=i-1;while(j>=0&&tv[j]>t){tv[j+1]=tv[j];j--;}tv[j+1]=t;}
+      out.data[p*4+ch]=tv[m];
+    }
+    out.data[p*4+3]=255;
+  }
+  return out;
+}
+
+/* 5 帧逐像素中值（实时拍摄，固定 ROI） */
+async function grabMedian(n){
+  const v=$('video'), r=roiRect(v.videoWidth,v.videoHeight);
+  const bufs=[];
+  for(let i=0;i<n;i++){
+    const c=document.createElement('canvas');c.width=c.height=P.SIZE;
+    const x=c.getContext('2d',{willReadFrequently:true});
+    x.drawImage(v,r.x,r.y,r.w,r.h,0,0,P.SIZE,P.SIZE);
+    bufs.push(x.getImageData(0,0,P.SIZE,P.SIZE));
+    if(i<n-1)await sleep(70);
+  }
+  return {img:medianOf(bufs), labs:bufs.map(b=>roiStats(b).lab)};
+}
+
+/* 5 帧 Lab 离散：作为近似色值与时间的实测不确定度 */
+function labSpread(labs){
+  const n=labs.length;
+  const sd=[0,1,2].map(i=>{
+    const m=labs.reduce((s,l)=>s+l[i],0)/n;
+    return Math.sqrt(labs.reduce((s,l)=>s+(l[i]-m)*(l[i]-m),0)/n);
+  });
+  return {sd, dE:Math.hypot(sd[0],sd[1],sd[2])};
+}
+
+/* ROI 统计：剔除高光像素后的均值色 */
+function roiStats(d){
+  let r=0,g=0,b=0,n=0,spec=0,lum=0;
+  for(let i=0;i<d.data.length;i+=4){
+    const R=d.data[i],G=d.data[i+1],B=d.data[i+2],mx=Math.max(R,G,B);
+    if(mx>=P.OVER||mx/255>P.SPEC_V){spec++;continue;}
+    r+=R;g+=G;b+=B;lum+=(0.2126*R+0.7152*G+0.0722*B)/255;n++;
+  }
+  if(!n){r=g=b=0;n=1;}
+  return {rgb:[r/n,g/n,b/n], lab:rgb2lab(r/n,g/n,b/n), luma:lum/Math.max(1,n), specFrac:spec/(d.data.length/4)};
+}
+
+/* 冻结当前帧，供对比图与弹层使用 */
+function freezeFrame(){
+  const v=$('video'); if(!v.videoWidth)return null;
+  const W=480,H=Math.round(480*v.videoHeight/v.videoWidth);
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  c.getContext('2d').drawImage(v,0,0,W,H);
+  frameCanvas=c;return c;
+}
+/* 冻结上传图片（等比缩到 480 宽） */
+function freezeFromImg(img){
+  const W=480,H=Math.round(480*img.height/img.width);
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  c.getContext('2d').drawImage(img,0,0,W,H);
+  frameCanvas=c;
+}
+/* 上传图片的固定 ROI 5 空间采样（中心+四角偏移），模拟多帧 */
+function roiCrops(img){
+  const side=Math.min(img.width,img.height)*P.ROI;
+  const cx=(img.width-side)/2, cy=(img.height-side)/2, sh=side*0.06;
+  const bufs=[];
+  for(const [dx,dy] of [[0,0],[sh,sh],[-sh,sh],[sh,-sh],[-sh,-sh]]){
+    const c=document.createElement('canvas');c.width=c.height=P.SIZE;
+    const x=c.getContext('2d',{willReadFrequently:true});
+    x.drawImage(img,cx+dx,cy+dy,side,side,0,0,P.SIZE,P.SIZE);
+    bufs.push(x.getImageData(0,0,P.SIZE,P.SIZE));
+  }
+  return bufs;
+}
+/* 上传流程：主体/异物检测 → 驳回或按批次时间点记录 */
+function processUpload(file,forBase){
+  loadImg(file,im=>{
+    const bufs=roiCrops(im), d=medianOf(bufs);
+    const ss=subjectStats(d,edgeMatRGB(im));
+    const fo=ss.fo, af=ss.af;
+    let msg='';
+    if(af<P.AFR_MIN)msg='⛔ 已驳回：未检测到苹果切面主体（苹果色占比 '+(af*100).toFixed(0)+'%）。仅识别苹果，请上传以苹果切面为主体的照片。';
+    else if(fo>P.FOR_MAX)msg='⛔ 已驳回：检测到疑似非苹果物体（占 ROI '+(fo*100).toFixed(0)+'%）。仅识别苹果，请重新上传仅含苹果切面的照片。';
+    if(msg){
+      if(forBase){$('baseStat').innerHTML=msg;}
+      else{$('upStat').innerHTML=msg;$('upStat').style.color='var(--bad)';}
+      return;
+    }
+    const st=roiStats(d);
+    st.src='upload';st.fo=fo;st.af=af;
+    const labs=bufs.map(b=>roiStats(b).lab);
+    const sp=labSpread(labs);
+    st.sd=sp.sd;st.de=sp.dE;
+    const biFrames=labs.map(l=>BI(l));
+    st.biLo=Math.min.apply(null,biFrames);st.biHi=Math.max.apply(null,biFrames);
+    freezeFromImg(im);drawPair(d);
+    $('geoBlock').classList.remove('hide');
+    const bi=BI(st.lab);
+    if(forBase){
+      if(BATCH.base&&BATCH.pts.length){
+        $('baseStat').innerHTML='⚠ 当前批次已有测量点，请先「新建批次」再设置基准照。';
+        return;
+      }
+      BATCH.base={lab:st.lab,bi,src:'ref'};BATCH.t0=Date.now();BATCH.pts=[];
+      $('baseStat').innerHTML='✅ 已设为 0 min（'+new Date().toLocaleTimeString('zh-CN',{hour12:false})+' 起算）';
+      const pb=predictLab(st.rgb), sb=st.sd||[0,0,0];
+      $('baseOut').innerHTML='<b>基准照绝对色值（≈，参考）</b><br>'
+        +'≈ <b>L* '+pb[0].toFixed(1)+' ±'+sb[0].toFixed(1)+' / a* '+pb[1].toFixed(1)+' ±'+sb[1].toFixed(1)+' / b* '+pb[2].toFixed(1)+' ±'+sb[2].toFixed(1)+'</b><br>'
+        +'不确定度 ±ΔE '+(st.de||0).toFixed(1)+'（空间 5 采样离散）；模型 poly2 岭回归输出，不作严格色值使用。';
+      $('baseOut').classList.remove('hide');
+      $('upStat').innerHTML='✅ 主体识别通过（苹果色 '+(af*100).toFixed(0)+'% ｜ 疑似异物 '+(fo*100).toFixed(0)+'%），基准照已生效。';$('upStat').style.color='';
+      $('shootMsg').textContent='基准照已设为 0 min（之后按基准口径计算）。';
+    }else{
+      if(BATCH.base){
+        const t=(Date.now()-BATCH.t0)/60000;
+        BATCH.pts.push({t,lab:st.lab,bi});
+        $('upStat').innerHTML='✅ 主体识别通过（苹果色 '+(af*100).toFixed(0)+'% ｜ 疑似异物 '+(fo*100).toFixed(0)+'%），已记为 t = '+t.toFixed(1)+' min 的测量点。';$('upStat').style.color='';
+        $('shootMsg').textContent='已记录上传照片为 t = '+t.toFixed(1)+' min 的测量点。';
+      }else{
+        $('upStat').innerHTML='✅ 主体识别通过（苹果色 '+(af*100).toFixed(0)+'% ｜ 疑似异物 '+(fo*100).toFixed(0)+'%），本次 BI 已直接算出。';$('upStat').style.color='';
+        $('shootMsg').textContent='已计算本次 BI（不记录时间点）。';
+      }
+    }
+    $('s3').classList.add('on');
+    lastSt=st;lastImg=d;RETEST_N=0;
+    renderResult(st,d);
+  });
+}
+
+function drawPair(roiImgData){
+  const oc=$('origC'),ocx=oc.getContext('2d');
+  ocx.clearRect(0,0,oc.width,oc.height);
+  if(frameCanvas){
+    const s=Math.min(oc.width/frameCanvas.width,oc.height/frameCanvas.height);
+    const dw=frameCanvas.width*s,dh=frameCanvas.height*s;
+    ocx.drawImage(frameCanvas,(oc.width-dw)/2,(oc.height-dh)/2,dw,dh);
+  }
+  const cp=$('corrPrev'),cpx=cp.getContext('2d');
+  cpx.clearRect(0,0,cp.width,cp.height);
+  if(roiImgData){
+    const tmp=document.createElement('canvas');tmp.width=tmp.height=P.SIZE;
+    tmp.getContext('2d').putImageData(roiImgData,0,0);
+    cpx.drawImage(tmp,0,0,cp.width,cp.height);
+    corrDataURL=tmp.toDataURL('image/jpeg',0.92);
+  }
+}
+let corrDataURL='';
+
+/* ============================================================
+   计算层
+   ============================================================ */
+function fmtTimeParts(min){
+  if(!isFinite(min)||min<=0)return {n:'—',u:''};
+  if(min<60)return {n:String(Math.round(min)),u:'分钟'};
+  const h=min/60;
+  return {n:h>720?'>720':h.toFixed(1),u:'小时'};
+}
+function fmtH(min){
+  const p=fmtTimeParts(min);
+  return p.n+(p.u?' '+p.u:'');
+}
+
+/* ============================================================
+   输出层
+   ============================================================ */
+/* 近似色值：模型输出 + 5 帧实测离散作为范围；不参与 k 与时间计算 */
+function showApprox(st){
+  const p=predictLab(st.rgb);
+  const sd=st.sd||[0,0,0], de=st.de||0;
+  const box=$('approxLab');
+  box.style.display='block';
+  box.innerHTML='<b>近似色值（参考，不参与计算）</b><br>'
+    +'≈ <span class="v">L* '+p[0].toFixed(1)+' ±'+sd[0].toFixed(1)
+    +' / a* '+p[1].toFixed(1)+' ±'+sd[1].toFixed(1)
+    +' / b* '+p[2].toFixed(1)+' ±'+sd[2].toFixed(1)+'</span><br>'
+    +'不确定度指标：<b>±ΔE '+de.toFixed(1)+'</b>（5 帧离散，仅含随机抖动，不含模型系统误差）';
+}
+/* ===== 模式 A：无基线 no_baseline（内置 Prompt A）=====
+   输入只有当前一张图；全程不读取 BATCH.base / 任何 t=0 的值；
+   只输出「剩余变化时间」，绝不输出总货架期。 */
+function renderNon(st){
+  const bi=BI(st.lab);
+  const T=getNum('nT');
+  const end=getNum('nEnd');
+  const up=st.src==='upload';
+
+  /* 采样记录（与计算路径无关） */
+  const s=SYS.set;
+  const R= up ? [
+    `来源：上传照片`,
+    `时间：${new Date().toLocaleString('zh-CN',{hour12:false})}`,
+    `校验：主体苹果色 ${(st.af*100).toFixed(0)}%（≥45%）｜ 疑似异物 ${(st.fo*100).toFixed(0)}%（<8%）｜ 高光剔除 ${(st.specFrac*100).toFixed(1)}%`,
+    `ROI：短边 60% 正中 → 256×256 ｜ 空间采样 5（中心+四角偏移）`
+  ] : [
+    `来源：实时拍摄（${P.FRAMES} 帧逐像素中值）`,
+    `设备：${SYS.device||'未知'} ｜ 朝向 ${s.facingMode||'—'} ｜ 分辨率 ${s.width||'—'}×${s.height||'—'} ｜ 帧率 ${s.frameRate?Number(s.frameRate).toFixed(0)+' fps':'—'}`,
+    `时间：${new Date().toLocaleString('zh-CN',{hour12:false})}`,
+    `校验：灰垫 ${(lastLive?lastLive.mat*100:0).toFixed(0)}% ｜ 过曝 ${(lastLive?lastLive.over*100:0).toFixed(1)}% ｜ 倾斜 ${lastLive&&lastLive.tilt!=null?lastLive.tilt.toFixed(1)+'°':'未检出'} ｜ 亮度 ${(lastLive?lastLive.luma*100:0).toFixed(0)}% ｜ 参照块 ${lastLive&&lastLive.ringDE!=null?'ΔE '+lastLive.ringDE.toFixed(1):'—'} ｜ 异物 ${lastLive?(lastLive.fo*100).toFixed(0)+'%':'—'}`,
+    `高光剔除 ${(st.specFrac*100).toFixed(1)}%`
+  ];
+  if(RETEST_N>0)R.push('重测：已按当前设定重测 '+RETEST_N+' 次 ｜ 本次设定 T='+(T!=null?T+'℃':'—（未填）')+' · ΔBI_end='+(end!=null?String(end):'—（未填）')+'（图像不变，仅按新设定重算）');
+  $('recBox').innerHTML=R.join('<br>');
+
+  /* 计算过程 · Step 1 预处理 + BI（各路径共用） */
+  const H=[];
+  let no=1;const N=()=>String(no++)+'.';
+  if(up){
+    H.push(`<b>${N()}</b> 上传图片在固定 ROI（短边 ${(P.ROI*100)|0}% 正中）取 <b>5 个空间采样</b>（中心+四角偏移）逐像素取中值，得 256×256 中值图`);
+  }else{
+    H.push(`<b>${N()}</b> 采 ${P.FRAMES} 帧，在固定 ROI（短边 ${(P.ROI*100)|0}% 正中）上<b>逐像素取中值</b>，得 256×256 中值图`);
+  }
+  H.push(`&nbsp;&nbsp;&nbsp;&nbsp;高光像素（V>${P.SPEC_V}）已剔除，本次剔除占比 ${(st.specFrac*100).toFixed(1)}%${st.fo!=null?'；异物检测：疑似非苹果 '+(st.fo*100).toFixed(0)+'%（阈值 8%）':''} → 观测 L* ${st.lab[0].toFixed(1)} / a* ${st.lab[1].toFixed(1)} / b* ${st.lab[2].toFixed(1)}（含未知常数偏色 δ，本模式不做校正）`);
+  H.push(`<b>${N()}</b> BI（标准式，全程不换）：x=(a*+1.75L*)/(5.645L*+a*−3.012b*)，BI=100×(x−0.31)/0.172 → <b>${bi.toFixed(3)}</b>（仅展示定位，禁止用绝对值猜档位）`);
+  const p=predictLab(st.rgb);
+  const sd=st.sd||[0,0,0];
+  H.push(`<b>${N()}</b> 近似色值（模型 poly2 岭回归，仅展示，不参与计算）：≈ L* ${p[0].toFixed(1)} ±${sd[0].toFixed(1)} / a* ${p[1].toFixed(1)} ±${sd[1].toFixed(1)} / b* ${p[2].toFixed(1)} ±${sd[2].toFixed(1)}，±ΔE ${(st.de||0).toFixed(1)}（5 帧离散）`);
+
+  /* 头部展示 */
+  $('remNum').textContent=bi.toFixed(1);$('remNum').className='bigNum';
+  $('remUnit').textContent='当前褐变指数 BI（只取决于图像，与温度无关 · 不用绝对值猜档）';
+  $('kvBI').innerHTML=bi.toFixed(2)+tagT('实测');
+  showApprox(st);
+
+  /* 输入契约：缺 T / 缺当前 L*a*b* / 缺 ΔBI_end → 停止计算，报「缺数据」 */
+  const missing=[];
+  if(T==null)missing.push('T（贮藏温度）');
+  if(end==null)missing.push('ΔBI_end（终点阈值）');
+  if(missing.length){
+    $('remRange').textContent='';
+    $('kvK').innerHTML=tagT('缺数据');
+    $('kvEnd').innerHTML=tagT('缺数据');
+    $('kvRem').innerHTML=tagT('缺数据');
+    $('nGrades').innerHTML=GRADE_A.map(g=>'<div><div class="k">'+g.n+'（BI_d='+g.bid+'）</div><div class="v">—</div><div class="d">缺数据</div></div>').join('');
+    $('limitNote').className='limit red';
+    $('limitNote').innerHTML='⚠ <b>缺数据：'+missing.join('、')+'未给定 → 停止计算</b>（不得自行假设）。仅直算展示当前 BI，不做任何时间计算。';
+    H.push(`<b>${N()}</b> 输入契约检查：缺 ${missing.join('、')} → 停止计算，报「缺数据」（不得自行假设）`);
+    $('calcBox').innerHTML=H.join('<br>');
+    return;
+  }
+  $('remRange').innerHTML='<b>【声明】</b>以下均为「剩余变化时间」（当前状态 → ΔBI_end='+end.toFixed(2)+'），<b>不是总货架期</b>（缺 t=0 起点，无法定义总时长）；本模式全程未使用任何 t=0 的值。';
+  $('kvEnd').innerHTML=end.toFixed(2)+tagT('待配置')+'<div class="k" style="font-size:10px;margin-top:2px">用户给定（参数表候选 20 仅为算例）</div>';
+
+  /* Step 3 取速率 */
+  const kk=kLookup(T);
+  const env=kEnv();
+  if(kk.status==='ok'){
+    $('kvK').innerHTML=kk.k.toFixed(4)+' min⁻¹<div class="k" style="font-size:10px;margin-top:2px">R²='+kk.r2.toFixed(3)+' · '+kk.src+tagT('实测')+'</div>';
+  }else if(kk.status==='outside'){
+    $('kvK').innerHTML=tagT('外推禁用')+'<div class="k" style="font-size:10px;margin-top:2px">T 超出 20.6–30.5℃ → 禁止外推，用实测 k 包络 '+env.lo.toFixed(4)+'–'+env.hi.toFixed(4)+' 只给区间</div>';
+  }else{
+    $('kvK').innerHTML=tagT('禁用')+'<div class="k" style="font-size:10px;margin-top:2px">T ≤ 4℃ → 禁用</div>';
+  }
+  H.push(`<b>${N()}</b> 分档定位：品种均值 (L₀,a₀,b₀) [待定]、分类器未配置 → 禁止用 BI 绝对值猜档位 → 输出浅/中/重三档候选表 [候选·待配置]（BI_d=5/10/15，已达终点 ≥20）`);
+  if(kk.status==='ok'){
+    H.push(`<b>${N()}</b> 取速率：T=${T}℃ ∈ 实测区间 [20.6, 30.5]℃ → k_BI=${kk.k.toFixed(4)} min⁻¹（R²=${kk.r2.toFixed(3)}，${kk.src}，[实测]）`);
+  }else if(kk.status==='outside'){
+    H.push(`<b>${N()}</b> 取速率：T=${T}℃ 超出实测区间 20.6–30.5℃ → <b>禁止外推</b>，标 C，用实测 k 包络 ${env.lo.toFixed(4)}–${env.hi.toFixed(4)} min⁻¹ 只给区间`);
+  }else{
+    H.push(`<b>${N()}</b> 取速率：T=${T}℃ ≤ 4℃ → <b>禁用</b>（区间外禁止外推），不给任何时间数值`);
+  }
+
+  /* ≤4℃ 禁用：不给点值也不给区间 */
+  if(kk.status==='disabled'){
+    $('kvRem').innerHTML=tagT('禁用');
+    $('nGrades').innerHTML=GRADE_A.map(g=>'<div><div class="k">'+g.n+'（BI_d='+g.bid+'）</div><div class="v">—</div><div class="d">≤4℃ 禁用</div></div>').join('');
+    $('limitNote').className='limit red';
+    $('limitNote').innerHTML='⚠ <b>≤4℃ 禁用</b>：温度远低于实测区间下限 20.6℃，禁止外推，不给点值也不给区间（硬约束）。';
+    $('calcBox').innerHTML=H.join('<br>');
+    return;
+  }
+
+  /* Step 4-5 中值与区间（逐档候选；ΔBI_end 单点 → 仅取档位半宽） */
+  const rows=GRADE_A.map(g=>{
+    const D=end-g.bid;
+    const r={n:g.n,bid:g.bid,D,end:D<0};
+    if(kk.status==='ok'){
+      r.trem=D/kk.k;
+      r.lo=Math.max(0,r.trem-KCONF.W/kk.k);
+      r.hi=r.trem+KCONF.W/kk.k;
+    }else{ /* outside：实测 k 包络展开，只给区间 */
+      r.lo=Math.max(0,(D-KCONF.W)/env.hi);
+      r.hi=(D+KCONF.W)/env.lo;
+    }
+    return r;
+  });
+  const rowVal=r=>{
+    if(r.end)return '已达/超过终点';
+    if(kk.status==='outside')return fmtRange(r.lo,r.hi);
+    if(r.trem>KCONF.ECAP)return fmtRange(r.lo,r.hi);
+    return fmtMin(r.trem);
+  };
+  const rowSub=r=>{
+    if(r.end)return 'ΔBI_end < BI_d='+r.bid+' → 不再给时间';
+    if(kk.status==='outside')return '只给区间（温度区间外，禁止外推）';
+    let b='区间 ['+r.lo.toFixed(1)+', '+r.hi.toFixed(1)+'] min';
+    if(r.trem>KCONF.ECAP)b+=' · >3×实测窗 → 标 C 只给区间';
+    else if(r.trem>KCONF.WIN)b+=' · 轻度外推 ×'+(r.trem/KCONF.WIN).toFixed(2);
+    return b;
+  };
+  $('nGrades').innerHTML=rows.map(r=>'<div><div class="k">'+r.n+'（BI_d='+r.bid+'）</div><div class="v">'+rowVal(r)+'</div><div class="d">'+rowSub(r)+'</div></div>').join('');
+  H.push(`<b>${N()}</b> 中值 T_rem=(ΔBI_end−BI_d)/k → `+rows.map(r=>r.n+' '+(r.end?'已达终点':(r.trem!=null?r.trem.toFixed(1)+' min':'只给区间'))).join(' / '));
+  H.push(`<b>${N()}</b> 区间（ΔBI_end 只有单点 → 仅取档位半宽 w=${KCONF.W}）→ `+rows.map(r=>r.n+' ['+r.lo.toFixed(1)+', '+r.hi.toFixed(1)+'] min').join(' / '));
+
+  /* Step 6 边界与降级 */
+  const why=[];
+  const over=rows.filter(r=>!r.end&&r.trem!=null&&r.trem>KCONF.WIN);
+  if(over.length)why.push(over.map(r=>r.n+' T_rem='+r.trem.toFixed(1)+' min（×'+(r.trem/KCONF.WIN).toFixed(2)+'）').join('、')+' 超出 35 min 实测窗 → 标「轻度外推」'+(over.some(r=>r.trem>KCONF.ECAP)?'；>3×窗（105 min）→ 该档只给区间':''));
+  if(kk.status==='ok'&&kk.r2<=0.784)why.push('k 来自 R²=0.784 实测组（30.5℃）→ 置信不高于 B');
+  if(kk.status==='outside')why.push('T='+T+'℃ 超出实测区间 20.6–30.5℃ → 禁止外推，只给区间，标 C');
+  why.push('档位边界 BI_d=5/10/15 [候选·待配置]、ΔBI_end 用户给定 [待配置] → 候选参数一经使用最高 C 级');
+  why.push('品种均值 [待定]、分类器未配置 → 只给三档候选表；本模式置信上限 B，此处为 C');
+  $('kvRem').innerHTML='<b>C 级</b>（仅供参考）';
+  $('limitNote').className='limit';
+  $('limitNote').innerHTML='<b>置信 C 级（仅供参考）· 依据</b><br>· '+why.join('<br>· ')+'<br>· 【声明】剩余变化时间，非总货架期。';
+  H.push(`<b>${N()}</b> 边界与降级：`+(over.length?('外推倍数 '+over.map(r=>'×'+(r.trem/KCONF.WIN).toFixed(2)).join('/')+'；'):'无外推触发；')+'候选参数 → 置信 C（仅供参考）');
+  H.push(`<b>${N()}</b> 输出口径：【模式】no_baseline ｜【剩余变化时间】（非总货架期）｜【置信】C ｜ 全程未使用任何 t=0 的值`);
+  $('calcBox').innerHTML=H.join('<br>');
+}
+
+/* ============================================================
+   输出层 · 公共小工具 + 模式 B 有基线（with_baseline）
+   严格按内置 Prompt B：预处理 → 参照解偏 → BI → ΔBI(t) → k/ΔBI_end
+   → T_rem/t_s → 区间 → δ 灵敏度判级
+   ============================================================ */
+function tagT(s){return ' <span class="tag '+((s==='实测')?'m':((s==='禁用'||s==='缺数据'||s==='外推禁用'||s==='外推')?'x':'l'))+'">'+s+'</span>';}
+function fmtMin(v){if(!isFinite(v))return '—';if(v<0.05)return '0 min';if(v<600)return v.toFixed(1)+' min';return fmtH(v);}
+function fmtRange(a,b){const f=v=>fmtMin(v);return f(a)+' – '+f(b);}
+/* 实测 k 包络（仅在温度超出实测区间时用于「只给区间」，不做点值外推） */
+function kEnv(){
+  let lo=Infinity,hi=-Infinity;
+  KTAB.forEach(r=>{lo=Math.min(lo,r.k);hi=Math.max(hi,r.k);});
+  return {lo,hi};
+}
+/* 施加偏色 δ 后的 BI（标准式；参照解偏 / δ 灵敏度共用） */
+function biOf(lab,d){d=d||[0,0,0];return BI([lab[0]+d[0],lab[1]+d[1],lab[2]+d[2]]);}
+
+function baseSeries(){
+  const S=[{t:0,lab:BATCH.base.lab}];
+  BATCH.pts.forEach(p=>S.push({t:p.t,lab:p.lab}));
+  S.sort((a,b)=>a.t-b.t);
+  return S;
+}
+/* Step 5 ΔE=3 首达交叉：以 t=0 的 (L₀,a₀,b₀) 为基准逐点算 ΔE，
+   取首次 ≥3 的相邻区间线性插值；lo/hi 为该区间两端 BI（作 ΔBI_end 展开区间） */
+function endCross(dRef){
+  const S=baseSeries();
+  const biAt=p=>biOf(dRef?[p.lab[0]-dRef[0],p.lab[1]-dRef[1],p.lab[2]-dRef[2]]:p.lab);
+  for(let i=1;i<S.length;i++){
+    const e0=i===1?0:dE(S[i-1].lab,S[0].lab);
+    const e1=dE(S[i].lab,S[0].lab);
+    if(e1>=3){
+      const w=e1-e0;
+      const r=w>0?Math.min(1,Math.max(0,(3-e0)/w)):1;
+      const t=S[i-1].t+(S[i].t-S[i-1].t)*r;
+      const b0=biAt(S[i-1]),b1=biAt(S[i]);
+      return {t,bi:b0+(b1-b0)*r,lo:Math.min(b0,b1),hi:Math.max(b0,b1),inWin:t<=KCONF.WIN};
+    }
+  }
+  return {none:true,eNow:dE(S[S.length-1].lab,S[0].lab)};
+}
+
+function renderBase(st){
+  const tNow=(Date.now()-BATCH.t0)/60000;
+  /* Step 2 参照解偏（可选）：δ=参照观测−参照真值，逐通道校正 t=0 与当前 */
+  let dRef=null,refUsed=false;
+  if(REF.lab&&REF.trueV){
+    dRef=[0,1,2].map(i=>REF.lab[i]-REF.trueV[i]);
+    refUsed=true;
+  }
+  const corr=lab=>refUsed?[lab[0]-dRef[0],lab[1]-dRef[1],lab[2]-dRef[2]]:lab;
+  const L0=corr(BATCH.base.lab),Lt=corr(st.lab);
+  /* Step 3-4 BI 与当前进度 */
+  const BI0=biOf(L0),BIt=biOf(Lt),dbiNow=BIt-BI0;
+  const eNow=dE(st.lab,BATCH.base.lab); /* ΔE 平移不变，无需校正 */
+  const T=getNum('bT'),endCfg=getNum('bEnd');
+
+  /* 近似色值（展示用，不参与计算） */
+  const pb=predictLab(st.rgb),sd=st.sd||[0,0,0];
+  $('bApprox').style.display='block';
+  $('bApprox').innerHTML='<b>本次近似色值（参考，不参与计算）</b><br>'
+    +'≈ <span class="v">L* '+pb[0].toFixed(1)+' ±'+sd[0].toFixed(1)
+    +' / a* '+pb[1].toFixed(1)+' ±'+sd[1].toFixed(1)
+    +' / b* '+pb[2].toFixed(1)+' ±'+sd[2].toFixed(1)+'</span><br>'
+    +'ΔE vs 基准照 = <b>'+eNow.toFixed(2)+'</b>（判据 3）｜ ΔBI(t) = <b>'+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+'</b>'
+    +(refUsed?'（已按参照逐通道解偏）':'（δ 未知，未校正）');
+
+  /* 采样记录 */
+  $('bRec').innerHTML=[
+    '口径：有基线 with_baseline（t=0 基准照 → 总货架期 + 剩余时间）',
+    '时序点：0（基准）'+BATCH.pts.map(p=>' · '+p.t.toFixed(1)+' min').join(''),
+    '本次：t = '+tNow.toFixed(1)+' min ｜ ΔE '+eNow.toFixed(2)+' ｜ ΔBI(t) '+(dbiNow>=0?'+':'')+dbiNow.toFixed(3),
+    '参照：'+(refUsed?'已用，逐通道 δ=('+dRef.map(v=>v.toFixed(1)).join(', ')+')':'未用，δ 未知（以灵敏度判级）'),
+    st.src==='upload'?'来源：上传照片（5 空间采样中值）':'来源：实时拍摄（'+P.FRAMES+' 帧逐像素中值）',
+    'ROI：短边 '+((P.ROI*100)|0)+'% 正中 → 256×256 ｜ 高光剔除 '+(st.specFrac*100).toFixed(1)+'%'
+  ].join('<br>');
+  if(RETEST_N>0)$('bRec').innerHTML+='<br>重测：已按当前设定重测 '+RETEST_N+' 次 ｜ 本次设定 T='+(T!=null?T+'℃':'—（未填）')+' · ΔBI_end='+(endCfg!=null?String(endCfg):'—（清空=ΔE=3 反解）')+'（图像不变，仅按新设定重算）';
+
+  /* kv 基础行 */
+  $('bBI0').innerHTML=BI0.toFixed(3)+tagT('实测')+(refUsed?'<span class="tag l">已解偏</span>':'');
+  $('bDbi').innerHTML=(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+tagT('实测');
+
+  /* 计算过程（固定顺序，前 4 步各路径共用） */
+  const calcHead=[];
+  let no=1;const N=()=>String(no++)+'.';
+  calcHead.push('<b>'+N()+'</b> 预处理两帧：t=0 与当前各做一遍（固定 ROI → 剔高光 → 多帧中值 / 空间采样中值）');
+  calcHead.push('<b>'+N()+'</b> 参照解偏：'+(refUsed?('参照观测−真值 → δ=('+dRef.map(v=>v.toFixed(1)).join(', ')+')，逐通道校正 t=0 与当前'):('未提供参照 → 跳过校正，标记「δ 未知」，写入置信依据')));
+  calcHead.push('<b>'+N()+'</b> BI（标准式，全程不换）：BI(0)='+BI0.toFixed(3)+'，BI(t)='+BIt.toFixed(3)+' → ΔBI(t)='+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+tagT('实测'));
+
+  /* 取 k */
+  const kk=T==null?{status:'missing'}:kLookup(T);
+  const env=kEnv();
+  if(kk.status==='ok'){
+    $('bK').innerHTML=kk.k.toFixed(4)+' min⁻¹<div class="k" style="font-size:10px;margin-top:2px">R²='+kk.r2.toFixed(3)+' · '+kk.src+tagT('实测')+'</div>';
+  }else if(kk.status==='outside'){
+    $('bK').innerHTML=tagT('外推禁用')+'<div class="k" style="font-size:10px;margin-top:2px">T 超出 20.6–30.5℃ → 用实测 k 包络 '+env.lo.toFixed(4)+'–'+env.hi.toFixed(4)+' 只给区间</div>';
+  }else if(kk.status==='disabled'){
+    $('bK').innerHTML=tagT('禁用')+'<div class="k" style="font-size:10px;margin-top:2px">T ≤ 4℃ → 禁用</div>';
+  }else{
+    $('bK').innerHTML=tagT('缺数据');
+  }
+  calcHead.push('<b>'+N()+'</b> 取 k：'+(T==null?'缺 T → 停止':(kk.status==='ok'?('T='+T+'℃ ∈ [20.6, 30.5]℃ → k_BI='+kk.k.toFixed(4)+' min⁻¹（R²='+kk.r2.toFixed(3)+'，'+kk.src+'，[实测]）'):(kk.status==='outside'?('T='+T+'℃ 超出 20.6–30.5℃ → 禁止外推，用实测包络 '+env.lo.toFixed(4)+'–'+env.hi.toFixed(4)+' 只给区间'):('T='+T+'℃ ≤ 4℃ → 禁用')))));
+
+  const gradeCards=sub=>['当前进度 ΔBI(t)','剩余时间 T_rem','总货架期 t_s（自 t=0）','区间 [T_low, T_high]']
+    .map(n=>'<div><div class="k">'+n+'</div><div class="v">'+(n.indexOf('进度')>=0?(dbiNow>=0?'+':'')+dbiNow.toFixed(3):'—')+'</div><div class="d">'+sub+'</div></div>').join('');
+
+  /* 输入契约：缺 T → 缺数据 */
+  if(T==null){
+    $('bNum').textContent='缺数据';$('bNum').className='bigNum na';
+    $('bUnit').textContent='缺 T（贮藏温度）→ 停止计算，不得自行假设';
+    $('bConcl').innerHTML='缺 <b>T（贮藏温度）</b> → 报「缺数据」。请在上方输入实测贮藏温度（20.6–30.5℃ 内插值有效）。当前进度：BI(0)='+BI0.toFixed(3)+'，ΔBI(t)='+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+'，ΔE='+eNow.toFixed(2)+'。';
+    $('bTc').innerHTML=endCfg!=null?endCfg.toFixed(2)+tagT('待配置'):tagT('缺数据');
+    $('bGrades').innerHTML=gradeCards('缺数据');
+    $('bLimit').className='limit red';
+    $('bLimit').innerHTML='⚠ <b>缺数据：T 未给定 → 停止计算</b>（不得自行假设）。';
+    calcHead.push('<b>'+N()+'</b> 输入契约检查：缺 T → 停止计算，报「缺数据」');
+    $('bCalc').innerHTML=calcHead.join('<br>');
+    return;
+  }
+  /* ≤4℃ 禁用 */
+  if(kk.status==='disabled'){
+    $('bNum').textContent='禁用';$('bNum').className='bigNum na';
+    $('bUnit').textContent='T ≤ 4℃ → 禁用（实测区间 20.6–30.5℃，禁止外推）';
+    $('bConcl').innerHTML='T='+T+'℃ ≤ 4℃ → <b>禁用</b>：温度远低于实测区间下限 20.6℃，禁止外推，不给任何时间数值。当前进度：ΔBI(t)='+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+'。';
+    $('bTc').innerHTML=endCfg!=null?endCfg.toFixed(2)+tagT('待配置'):tagT('缺数据');
+    $('bGrades').innerHTML=gradeCards('禁用');
+    $('bLimit').className='limit red';
+    $('bLimit').innerHTML='⚠ <b>≤4℃ 禁用</b>：不给点值也不给区间（硬约束）。';
+    calcHead.push('<b>'+N()+'</b> T ≤ 4℃ → 禁用，停止计算');
+    $('bCalc').innerHTML=calcHead.join('<br>');
+    return;
+  }
+
+  /* Step 5 后半：ΔBI_end（默认优先 ΔE=3 反解；反解失败才退回候选值 20 兜底） */
+  let endInfo;
+  const cross=endCross(dRef);                 /* 每次都先尝试 ΔE=3 首达反解（模式 B 有基线） */
+  if(!cross.none){
+    endInfo={v:cross.bi-BI0,lo:cross.lo-BI0,hi:cross.hi-BI0,st:'实测',tCross:cross.t,inWin:cross.inWin,
+      src:'ΔE=3 首达反解 · t_cross='+cross.t.toFixed(1)+' min'+(cross.inWin?'（窗内）':'（窗外 → 标外推）')};
+    $('bTc').innerHTML=endInfo.v.toFixed(3)+tagT('实测')+'<div class="k" style="font-size:10px;margin-top:2px">'+endInfo.src+'（优先于候选值 20）</div>';
+  }else if(endCfg!=null){
+    /* 反解失败 → 退回候选值（含预填 20 或用户手动值）；走兜底，置信自动降 C */
+    endInfo={v:endCfg,lo:endCfg,hi:endCfg,st:'待配置',src:'反解失败·退候选值',fallback:true};
+    $('bTc').innerHTML=endInfo.v.toFixed(3)+tagT('待配置')+'<div class="k" style="font-size:10px;margin-top:2px">反解失败兜底（ΔE 始终&lt;3 或时序不足）→ 置信 C</div>';
+  }else{
+    /* 反解失败且未给定任何候选值 → 缺数据 */
+    $('bNum').textContent='缺数据';$('bNum').className='bigNum na';
+    $('bUnit').textContent='ΔBI_end 不可得（反解失败且未给定候选值，当前 ΔE='+cross.eNow.toFixed(2)+'）→ 无法判定终点';
+    $('bConcl').innerHTML='ΔBI_end 不可得：由 t=0 基线逐点算 ΔE，当前 <b>'+cross.eNow.toFixed(2)+'</b> 尚未首次达到 3，且未给定候选值 → 缺「ΔBI_end」。请继续同一机位复拍至 ΔE 首达 3（系统将自动反解），或在上方直接输入候选值。当前 ΔBI(t)='+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+'。';
+    $('bTc').innerHTML=tagT('缺数据');
+    $('bGrades').innerHTML=gradeCards('缺数据');
+    $('bLimit').className='limit red';
+    $('bLimit').innerHTML='⚠ <b>缺数据：ΔBI_end 不可得</b>（反解失败且未给定候选值）→ 停止计算，不得自行假设。';
+    calcHead.push('<b>'+N()+'</b> ΔBI_end：优先 ΔE=3 反解 → 当前 ΔE='+cross.eNow.toFixed(2)+'（&lt;3）→ 反解失败；未给定候选值 → 缺数据，停止计算');
+    $('bCalc').innerHTML=calcHead.join('<br>');
+    return;
+  }
+
+  /* Step 6-7 时间与区间 */
+  const outside=kk.status==='outside';
+  let tRem=null,tS=null,chk=null,u_k=null,kLo=null,kHi=null,tSlo,tShi,Tlo,Thi;
+  if(!outside){
+    u_k=Math.max(1-kk.r2,0); /* CV 未提供 → 取 1−R² */
+    kLo=kk.k*(1-u_k);kHi=kk.k*(1+u_k);
+    tRem=(endInfo.v-dbiNow)/kk.k;
+    tS=endInfo.v/kk.k;
+    chk=tNow+tRem-tS;
+    tSlo=endInfo.lo/kHi;tShi=endInfo.hi/kLo;
+    Tlo=Math.min((endInfo.lo-dbiNow)/kHi,(endInfo.lo-dbiNow)/kLo,(endInfo.hi-dbiNow)/kHi,(endInfo.hi-dbiNow)/kLo);
+    Thi=Math.max((endInfo.lo-dbiNow)/kHi,(endInfo.lo-dbiNow)/kLo,(endInfo.hi-dbiNow)/kHi,(endInfo.hi-dbiNow)/kLo);
+  }else{ /* 温度区间外：实测 k 包络展开，只给区间 */
+    tSlo=endInfo.lo/env.hi;tShi=endInfo.hi/env.lo;
+    Tlo=Math.min((endInfo.lo-dbiNow)/env.hi,(endInfo.lo-dbiNow)/env.lo,(endInfo.hi-dbiNow)/env.hi,(endInfo.hi-dbiNow)/env.lo);
+    Thi=Math.max((endInfo.lo-dbiNow)/env.hi,(endInfo.lo-dbiNow)/env.lo,(endInfo.hi-dbiNow)/env.hi,(endInfo.hi-dbiNow)/env.lo);
+  }
+  const reached=tRem!=null&&tRem<0;
+  const tSrep=(chk!=null&&Math.abs(chk)>1)?tNow+tRem:tS; /* 校核不一致 → 取 t+T_rem */
+
+  /* Step 8 δ 灵敏度（标准式 BI → δ 仅近似抵消，必跑） */
+  let drift=0,driftD=[0,0,0];
+  [[0,0,0]].concat(DELTAS).forEach(d=>{
+    const dv=Math.abs((biOf(Lt,d)-biOf(L0,d))-dbiNow);
+    if(dv>drift){drift=dv;driftD=d;}
+  });
+  const why=[];
+  let conf;
+  if(drift<0.5){conf='A';why.push('δ 灵敏度：最大漂移 '+drift.toFixed(2)+'（δ='+driftD.join('/')+'）< 0.5 → A');}
+  else if(drift<=1.5){conf='B';why.push('δ 灵敏度：最大漂移 '+drift.toFixed(2)+'（δ='+driftD.join('/')+'）∈ [0.5,1.5] → B');}
+  else{conf='C';why.push('δ 灵敏度：最大漂移 '+drift.toFixed(2)+'（δ='+driftD.join('/')+'）> 1.5 → 须参照校正或改线性式，判 C');}
+  if(refUsed)why.push('参照解偏已应用（逐通道 δ=('+dRef.map(v=>v.toFixed(1)).join(', ')+')）');
+  else why.push('未提供参照 → δ 未知，以灵敏度判级');
+  if(conf==='A'&&kk.r2<=0.784){conf='B';why.push('k 来自 R²=0.784 实测组（30.5℃）→ 置信不高于 B');}
+  if(endInfo.tCross!=null&&!endInfo.inWin){conf='C';why.push('ΔE=3 交叉点 t_cross='+endInfo.tCross.toFixed(1)+' min 落在 0–35 min 窗外 → 标「外推」，置信最高 C');}
+  if(outside){conf='C';why.push('T='+T+'℃ 超出实测区间 20.6–30.5℃ → 禁止外推，只给区间');}
+  if(tS!=null&&tS>KCONF.ECAP){conf='C';why.push('t_s='+tS.toFixed(0)+' min > 3×实测窗（105 min）→ 轻度外推，标 C');}
+  else if(tS!=null&&tS>KCONF.WIN){why.push('t_s='+tS.toFixed(0)+' min 超出 35 min 实测窗 → 轻度外推 ×'+(tS/KCONF.WIN).toFixed(2));}
+  if(chk!=null&&Math.abs(chk)>1)why.push('校核差异 t+T_rem−t_s='+(chk>=0?'+':'')+chk.toFixed(2)+' min（>1 min）→ 总货架期取 t+T_rem='+tSrep.toFixed(1)+' min');
+  if(reached)why.push('T_rem='+tRem.toFixed(1)+' min < 0（ΔBI(t) 已达到/超过终点）→ 不再给剩余时间，总货架期照给');
+
+  /* 大数字与结论 */
+  const remTxt=reached?'已达/超过终点':(outside?fmtRange(Math.max(Tlo,0),Thi):fmtMin(tRem));
+  if(reached){
+    $('bNum').textContent='已达';$('bNum').className='bigNum na';
+    $('bUnit').textContent='ΔBI(t) 已达到/超过 ΔBI_end → 不再给剩余时间';
+  }else if(outside){
+    $('bNum').textContent=fmtRange(Math.max(Tlo,0),Thi);$('bNum').className='bigNum'+(conf==='C'?' na':'');
+    $('bUnit').textContent='剩余时间只给区间（温度区间外，禁止外推）';
+  }else{
+    const tp=fmtTimeParts(tRem);
+    $('bNum').textContent=tp.n;$('bNum').className='bigNum'+(conf==='C'?' na':'');
+    $('bUnit').textContent=tp.u+'（剩余时间：当前 → ΔBI_end='+endInfo.v.toFixed(2)+'）';
+  }
+  $('bConcl').innerHTML='【结论】剩余时间：<b>'+remTxt+'</b>（置信 <b>'+conf+' 级</b>'+(conf==='C'?'，仅供参考':'')+'）｜ 总货架期：<b>'+(outside?fmtRange(Math.max(tSlo,0),tShi):fmtMin(tSrep))+'</b>（自 t=0 起算'+(outside?'；区间外只给区间':('；校核 t+T_rem='+fmtMin(tNow+tRem)))+'）';
+
+  /* 四卡：进度 · 剩余 · 总货架期 · 区间 */
+  const gRemSub=reached?'ΔBI(t) 已达到/超过 ΔBI_end，不再给时间':(outside?'温度区间外 → 只给区间':('区间 ['+Math.max(Tlo,0).toFixed(1)+', '+Thi.toFixed(1)+'] min'+(tRem>KCONF.WIN?' · 轻度外推 ×'+(tRem/KCONF.WIN).toFixed(2):'')));
+  const gTs=outside?fmtRange(Math.max(tSlo,0),tShi):fmtMin(tSrep);
+  const gTsSub=outside?'只给区间（禁止外推）':('校核 t+T_rem='+fmtMin(tNow+tRem)+(chk!=null&&Math.abs(chk)>1?('（差 '+(chk>=0?'+':'')+chk.toFixed(1)+' min）'):''));
+  const gIvSub=(outside?('实测 k 包络 '+env.lo.toFixed(4)+'–'+env.hi.toFixed(4)+' 展开'):('u_k='+(u_k*100).toFixed(1)+'%（k∈['+kLo.toFixed(4)+', '+kHi.toFixed(4)+']）'))+' · '+(reached?'已达终点':('剩余 ['+Math.max(Tlo,0).toFixed(1)+', '+Thi.toFixed(1)+'] min'));
+  $('bGrades').innerHTML=
+    '<div><div class="k">当前进度 ΔBI(t)</div><div class="v">'+(dbiNow>=0?'+':'')+dbiNow.toFixed(3)+'</div><div class="d">BI(0)='+BI0.toFixed(2)+' → BI(t)='+BIt.toFixed(2)+'</div></div>'
+   +'<div><div class="k">剩余时间 T_rem</div><div class="v">'+remTxt+'</div><div class="d">'+gRemSub+'</div></div>'
+   +'<div><div class="k">总货架期 t_s（自 t=0）</div><div class="v">'+gTs+'</div><div class="d">'+gTsSub+'</div></div>'
+   +'<div><div class="k">区间 [T_low, T_high]</div><div class="v">'+fmtRange(Math.max(tSlo,0),tShi)+'</div><div class="d">'+gIvSub+'</div></div>';
+
+  /* 限制与依据 */
+  const L=[];
+  L.push('ΔE=3＝「刚可察觉差异」，不是「明显褐变」'+tagT('默认')+'，不能直接当货架期终点');
+  L.push('温度只在 20.6–30.5℃ 实测区间内插值；区间外禁止外推；≤4℃ 禁用');
+  L.push('ΔBI 只配 k_BI、ΔE 只配 k_E，严禁交叉；25.5/25.8℃ 异常组 [禁用] 已剔除');
+  if(conf==='C')L.push('C 级结论仅供参考');
+  $('bLimit').className='limit '+(conf==='C'?'red':'green');
+  $('bLimit').innerHTML='<b>置信 '+conf+' 级 · 依据与限制</b><br>· '+why.concat(L).join('<br>· ');
+
+  /* 计算过程（续） */
+  if(!outside){
+    calcHead.push('<b>'+N()+'</b> ΔBI_end：'+(endInfo.st==='实测'?('优先 ΔE=3 反解成功 → t_cross='+endInfo.tCross.toFixed(1)+' min（'+(endInfo.inWin?'0–35 min 窗内':'窗外 → 标外推')+'），ΔBI_end=BI_cross−BI(0)='+endInfo.v.toFixed(3)+tagT('实测')):('反解失败 → 退候选值 '+endInfo.v.toFixed(2)+tagT('待配置')+'（置信 C）')));
+    calcHead.push('<b>'+N()+'</b> u_k=max(1−R², CV/√n)=max('+(1-kk.r2).toFixed(4)+', CV未提供→0)='+(u_k*100).toFixed(1)+'% → k∈['+kLo.toFixed(4)+', '+kHi.toFixed(4)+'] min⁻¹');
+    calcHead.push('<b>'+N()+'</b> T_rem=(ΔBI_end−ΔBI(t))/k=('+endInfo.v.toFixed(3)+'−('+dbiNow.toFixed(3)+'))/'+kk.k.toFixed(4)+'='+tRem.toFixed(1)+' min；t_s=ΔBI_end/k='+tS.toFixed(1)+' min；校核 t+T_rem='+(tNow+tRem).toFixed(1)+' min（差异 '+(chk>=0?'+':'')+chk.toFixed(2)+' min）');
+    calcHead.push('<b>'+N()+'</b> 区间（ΔBI_end low/high × k low/high 组合取最宽）→ t_s∈['+Math.max(tSlo,0).toFixed(1)+', '+tShi.toFixed(1)+'] min，T_rem∈['+Math.max(Tlo,0).toFixed(1)+', '+Thi.toFixed(1)+'] min');
+  }else{
+    calcHead.push('<b>'+N()+'</b> ΔBI_end：'+(endInfo.st==='实测'?('优先 ΔE=3 反解成功 → '+endInfo.v.toFixed(3)+tagT('实测')):('反解失败 → 退候选值 '+endInfo.v.toFixed(2)+tagT('待配置')+'（置信 C）')));
+    calcHead.push('<b>'+N()+'</b> 温度区间外 → 禁止外推：用实测 k 包络 '+env.lo.toFixed(4)+'–'+env.hi.toFixed(4)+' 展开区间 → t_s∈['+Math.max(tSlo,0).toFixed(1)+', '+tShi.toFixed(1)+'] min，T_rem∈['+Math.max(Tlo,0).toFixed(1)+', '+Thi.toFixed(1)+'] min，不给点值');
+  }
+  calcHead.push('<b>'+N()+'</b> δ 灵敏度（标准式 BI → δ 仅近似抵消，必跑）：δ∈{(0,0,0),(3,2,5),(5,3,12)} → 最大漂移 '+drift.toFixed(2)+'（δ='+driftD.join('/')+'）→ 判 '+conf);
+  calcHead.push('<b>'+N()+'</b> 置信：'+conf+' 级 —— '+why.join('；'));
+  $('bCalc').innerHTML=calcHead.join('<br>');
+}
+
+/* 上传基准照 → 基准口径；未上传 → 无基准口径（每次独立算 BI，不记录时间点） */
+function renderResult(st){
+  const isBase=!!BATCH.base&&BATCH.base.src==='ref';
+  $('resEmpty').classList.add('hide');
+  $('resBase').classList.toggle('hide',!isBase);
+  $('resNon').classList.toggle('hide',isBase);
+  ['resDetailB','resDetailN'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('hide');});
+  var ok=document.getElementById('retestOk');if(ok)ok.classList.add('hide');
+  if(isBase)renderBase(st);else renderNon(st);
+}
+
+async function capture(){
+  if(!gateOk||!stream)return;
+  $('btnShoot').disabled=true;
+  $('shootMsg').textContent='采集中（5 帧中值）…';
+  try{
+    freezeFrame();
+    const grab=await grabMedian(P.FRAMES);
+    const d=grab.img;
+    const st=roiStats(d);
+    st.src='live';st.fo=lastLive?lastLive.fo:null;
+    const sp=labSpread(grab.labs);
+    st.sd=sp.sd;st.de=sp.dE;
+    const biFrames=grab.labs.map(l=>BI(l));
+    st.biLo=Math.min.apply(null,biFrames);st.biHi=Math.max.apply(null,biFrames);
+    drawPair(d);
+    $('geoBlock').classList.remove('hide');
+    const bi=BI(st.lab);
+    if(BATCH.base){
+      const t=(Date.now()-BATCH.t0)/60000;
+      BATCH.pts.push({t,lab:st.lab,bi});
+      $('shootMsg').textContent='已记录 t = '+t.toFixed(1)+' min 的测量点。';
+    }else{
+      $('shootMsg').textContent='已计算本次 BI（不记录时间点）。';
+    }
+    $('s3').classList.add('on');
+    lastSt=st;lastImg=d;RETEST_N=0;
+    renderResult(st,d);
+  }finally{
+    $('btnShoot').disabled=!gateOk;
+  }
+}
+
+/* ============================================================
+   基准照 / 自建参照（可选）
+   ============================================================ */
+function renderRef(){
+  if(!REF.lab){$('refOut').classList.add('hide');return;}
+  const trueV=REF.trueV, d=[0,1,2].map(i=>REF.lab[i]-trueV[i]);
+  const corr=[0,1,2].map(i=>REF.lab[i]-d[i]);
+  $('refOut').innerHTML='参照 as-shot Lab = L* '+REF.lab[0].toFixed(1)+' / a* '+REF.lab[1].toFixed(1)+' / b* '+REF.lab[2].toFixed(1)
+    +'<br>偏置 δ = ('+d.map(v=>v.toFixed(1)).join(', ')+') → 校正后 = L* '+corr[0].toFixed(1)+' / a* '+corr[1].toFixed(1)+' / b* '+corr[2].toFixed(1)
+    +'<br>绝对值仅作参考展示，不参与趋势计算。';
+  $('refOut').classList.remove('hide');
+}
+function loadImg(file,cb){
+  const fr=new FileReader();
+  fr.onload=()=>{const im=new Image();im.onload=()=>cb(im);im.src=fr.result;};
+  fr.readAsDataURL(file);
+}
+
+/* ============================================================
+   事件绑定
+   ============================================================ */
+$('btnStart').onclick=startCam;
+$('btnShoot').onclick=capture;
+$('pledge').onchange=()=>{
+  SYS.pledge=$('pledge').checked;
+  $('pledgeBox').classList.toggle('ok',SYS.pledge);
+  if(lastSt)renderResult(lastSt,lastImg);
+};
+/* 温度 T / ΔBI_end 输入 → 实时重算（A 无基线用 nT/nEnd，B 有基线用 bT/bEnd，两段互不引用） */
+['nT','nEnd','bT','bEnd'].forEach(id=>{
+  $(id).addEventListener('input',()=>{if(lastSt)renderResult(lastSt,lastImg);});
+});
+/* 重测：改 T/ΔBI_end 后点「重测」——下面结果区保持原样（温度相关字段已按原理实时更新：BI 不变、时间/k 随温度变），仅在一侧弹一个小「重测成功」绿框，不显示任何计算/次数 */
+function doRetest(){
+  if(!lastSt)return;
+  RETEST_N++;
+  renderResult(lastSt,lastImg); // 按当前输入的新温度刷新结果区（BI 不变、时间随温度变），并先隐藏旧绿框
+  var isBase=!!BATCH.base&&BATCH.base.src==='ref';
+  var panel=document.getElementById(isBase?'resBase':'resNon');
+  var detail=document.getElementById(isBase?'resDetailB':'resDetailN');
+  var box=document.getElementById('retestOk');
+  if(!box){
+    box=document.createElement('div');
+    box.id='retestOk';
+    box.style.cssText='display:inline-block;margin:4px 0 0;padding:7px 14px;font-size:13px;font-weight:600;color:var(--green);background:#eaf4ee;border:1px solid #bfe3cf;border-radius:10px';
+    panel.insertBefore(box, detail);
+  }else{
+    panel.insertBefore(box, detail);
+  }
+  box.textContent='重测成功';
+  box.classList.remove('hide');
+}
+$('btnRetestB').onclick=doRetest;
+$('btnRetestN').onclick=doRetest;
+$('btnReset').onclick=()=>{
+  BATCH.base=null;BATCH.pts=[];BATCH.t0=0;RETEST_N=0;
+  $('resBase').classList.add('hide');$('resNon').classList.add('hide');
+  $('resEmpty').classList.remove('hide');
+  $('s3').classList.remove('on');$('shootMsg').textContent='批次已清空。';
+  $('baseStat').textContent='未设置';$('baseOut').classList.add('hide');
+  $('upStat').innerHTML='仅识别苹果切面：上传照片若<b>主体不是苹果</b>或检出其他物体将<b>直接驳回</b>；实时拍摄对主体/异物/反光/远近给出<b>实时提示</b>。';$('upStat').style.color='';
+};
+$('origC').onclick=()=>{
+  if(!frameCanvas||!corrDataURL)return;
+  $('cmpBefore').src=frameCanvas.toDataURL('image/jpeg',0.92);
+  $('cmpAfter').src=corrDataURL;
+  $('cmpModal').classList.remove('hide');
+};
+$('corrPrev').onclick=$('origC').onclick;
+$('cmpClose').onclick=()=>$('cmpModal').classList.add('hide');
+$('cmpModal').onclick=e=>{if(e.target===$('cmpModal'))$('cmpModal').classList.add('hide');};
+
+$('refType').onchange=()=>{
+  const v=$('refType').value;
+  if(v==='white'){$('refL').value=95;$('refA').value=0;$('refB').value=0;}
+  if(v==='gray'){$('refL').value=50;$('refA').value=0;$('refB').value=0;}
+  REF.trueV=[parseFloat($('refL').value)||0,parseFloat($('refA').value)||0,parseFloat($('refB').value)||0];
+  renderRef();
+};
+$('fileUp').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  processUpload(f,false);e.target.value='';
+};
+$('fileBase').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  processUpload(f,true);e.target.value='';
+};
+$('fileRef').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  loadImg(f,im=>{
+    REF.lab=roiStats(medianOf(roiCrops(im))).lab;
+    REF.trueV=[parseFloat($('refL').value)||0,parseFloat($('refA').value)||0,parseFloat($('refB').value)||0];
+    $('refStat').textContent='已载入 '+im.width+'×'+im.height;
+    renderRef();
+  });
+};
+['refL','refA','refB'].forEach(id=>$(id).oninput=()=>{
+  REF.trueV=[parseFloat($('refL').value)||0,parseFloat($('refA').value)||0,parseFloat($('refB').value)||0];
+  renderRef();
+});
+$('btnLive').onclick=()=>{
+  const open=!$('liveArea').classList.contains('hide');
+  if(open){closeLive();stopCam();}
+  else{
+    openLive();
+    if(!stream)startCam();
+    $('card2').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+};
+@@ENDSCRIPT@@
+</body>
+</html>
+
+</script>
+<script>
+function tpl(id){return document.getElementById(id).textContent.split('@@ENDSCRIPT@@').join('<\/script>');}
+const SRC={main:tpl('tplV7')};
+const loaded={};
+let cur="main";
+function ensure(ver){if(loaded[ver])return;const f=document.getElementById("fMain");f.srcdoc=SRC[ver];loaded[ver]=true;}
+function show(ver,noHash){cur=ver;ensure(ver);if(!noHash)history.replaceState(null,"","#"+ver);}
+document.getElementById("pop").onclick=function(){const w=window.open("","_blank");if(!w){alert("浏览器拦截了新窗口，请允许弹出窗口后重试。");return;}w.document.open();w.document.write(SRC[cur]);w.document.close();};
+show("main",true);
+</script>
+</body>
+</html>
